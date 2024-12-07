@@ -1,22 +1,20 @@
 package business.flight;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
 import java.io.Serializable;
-import jakarta.persistence.Id;
-
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-
 import java.util.Set;
 
 import business.aircraft.Aircraft;
 import business.airport.Airport;
 import business.flightinstance.FlightInstance;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
 
@@ -43,12 +41,15 @@ public class Flight implements Serializable {
 	private String departureTime;
 	private boolean active;
 	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false)
 	private Aircraft aircraft;
 	@OneToMany(mappedBy = "flight")
 	private Set<FlightInstance> flightInstance;
 	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false)
 	private Airport origin;
 	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false)
 	private Airport destination;
 	@Version
 	private int version;

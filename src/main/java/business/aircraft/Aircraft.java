@@ -1,19 +1,17 @@
 package business.aircraft;
 
 
+import java.io.Serializable;
+import java.util.Set;
+
+import business.flight.Flight;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
-import java.io.Serializable;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-
-import java.util.Set;
-
-import business.flight.Flight;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
 

@@ -24,7 +24,7 @@ import jakarta.persistence.Version;
 	@NamedQuery(name = "business.flightinstance.FlightInstance.getAll",
 				query = "SELECT f FROM FlightInstance f"),
 	@NamedQuery(name = "business.flightinstance.FlightInstance.ById",
-				query = "SELECT f FROM FlightInstance f WHERE f.id =: id")
+				query = "SELECT f FROM FlightInstance f WHERE f.id = :id")
 
 })
 public class FlightInstance implements Serializable {

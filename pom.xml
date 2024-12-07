@@ -13,9 +13,9 @@
   <dependencies>
 	
 	<dependency>
-	    <groupId>org.hibernate.orm</groupId>
-	    <artifactId>hibernate-core</artifactId>
-	    <version>6.6.1.Final</version>
+    	<groupId>org.eclipse.persistence</groupId>
+    	<artifactId>org.eclipse.persistence.jpa</artifactId>
+    	<version>4.0.4</version>
 	</dependency>
 
 	<dependency>
@@ -25,28 +25,36 @@
 	</dependency>
 	
 	<dependency>
-    	<groupId>com.h2database</groupId>
-    	<artifactId>h2</artifactId>
-    	<version>2.2.224</version>
-    	<scope>test</scope>
-	</dependency>
-	
-	<dependency>
     	<groupId>junit</groupId>
     	<artifactId>junit</artifactId>
     	<version>4.13.2</version>
     	<scope>test</scope>
 	</dependency>
+	
 	<dependency>
 		<groupId>com.sun.xml.ws</groupId>
         <artifactId>jaxws-rt</artifactId>
 		<version>4.0.3</version>
 	</dependency>
+
 	<dependency>
 		<groupId>org.glassfish.metro</groupId>
 		<artifactId>webservices-rt</artifactId>
 		<version>2.3</version>
 		<scope>provided</scope>
 	</dependency>
+
+	<dependency>
+		<groupId>jakarta.servlet</groupId>
+		<artifactId>jakarta.servlet-api</artifactId>
+		<version>6.1.0</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>jakarta.persistence</groupId>
+		<artifactId>jakarta.persistence-api</artifactId>
+		<version>3.1.0</version>
+	</dependency>
+	
   </dependencies>
 </project>

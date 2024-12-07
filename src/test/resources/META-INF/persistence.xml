@@ -5,8 +5,8 @@
                                  https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
              version="3.0">
 
-    <persistence-unit name="MtaAirline2" transaction-type="RESOURCE_LOCAL">
-	    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <persistence-unit name="MtaAirline" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
  		<class>business.aircraft.Aircraft</class>
 		<class>business.airport.Airport</class>
 		<class>business.customer.Customer</class>
@@ -15,11 +15,10 @@
 		<class>business.reservation.Reservation</class>
 		<class>business.reservationline.ReservationLine</class> 
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1"/>
-            <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value=""/>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3308/airline"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="password"/>
 			<property name="jakarta.persistence.schema-generation.database.action" value="create-drop" />
         </properties>
     </persistence-unit>
