@@ -9,15 +9,9 @@ public class SingletonEntityManagerFactory {
     private SingletonEntityManagerFactory(){}
 
     public static synchronized  EntityManagerFactory getInstance() {
-    	try {
-    		if (instance == null) 
-    			instance = Persistence.createEntityManagerFactory(NAME_PERSISTANCE);
-    	} catch(Throwable e) {
-    		String x =  e.getMessage();
-    		String x2 = x;
-    	}
-		
-		
+		if (instance == null) 
+			instance = Persistence.createEntityManagerFactory(NAME_PERSISTANCE);
+    
 		return instance;
 	}
     
