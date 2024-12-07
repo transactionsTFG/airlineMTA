@@ -1,24 +1,22 @@
 package business;
 
+import java.time.ZoneId;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import java.time.ZoneId;
-
 import org.junit.Test;
 
-import business.consts.SAError;
-import business.consts.SASuccess;
-import business.consts.ValidatorMessage;
 import business.customer.CustomerDTO;
-import business.flight.FlightDTO;
 import business.flightinstance.FlightInstanceDTO;
 import business.reservation.ReservationDTO;
 import business.reservationline.ReservationLineDTO;
-import business.result.Result;
+import common.consts.SAError;
+import common.consts.SASuccess;
+import common.consts.ValidatorMessage;
+import common.dto.result.Result;
 import generatemocks.SAManagerForUnitTest;
 
 public class SAReservationTest extends SAManagerForUnitTest {

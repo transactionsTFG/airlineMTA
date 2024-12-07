@@ -14,7 +14,7 @@ import business.reservation.Reservation;
 import business.reservation.ReservationDTO;
 import business.reservationline.ReservationLine;
 import business.reservationline.ReservationLineDTO;
-import business.utils.ZonedDateUtils;
+import common.utils.ZonedDateUtils;
 import integration.transaction.TransactionManager;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

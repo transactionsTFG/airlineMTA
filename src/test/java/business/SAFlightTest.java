@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
-import business.consts.SAError;
-import business.consts.SASuccess;
 import business.flight.FlightDTO;
-import business.result.Result;
+import common.consts.SAError;
+import common.consts.SASuccess;
+import common.dto.result.Result;
 import generatemocks.SAManagerForUnitTest;
 
 public class SAFlightTest extends SAManagerForUnitTest {

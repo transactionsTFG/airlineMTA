@@ -1,8 +1,8 @@
 package business.flight;
 
-import business.consts.SAError;
-import business.exception.SAAFlightException;
-import business.result.Result;
+import common.consts.SAError;
+import common.dto.result.Result;
+import common.exception.SAAFlightException;
 import integration.transaction.TransactionManager;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;

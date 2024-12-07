@@ -1,25 +1,22 @@
 package business.flightinstance;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Version;
-
 import java.util.Set;
 
 import business.flight.Flight;
 import business.reservationline.ReservationLine;
-import business.utils.ZonedDateUtils;
+import common.utils.ZonedDateUtils;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 
 
 @Entity

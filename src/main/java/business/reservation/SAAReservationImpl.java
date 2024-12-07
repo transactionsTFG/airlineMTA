@@ -3,23 +3,19 @@ package business.reservation;
 
 import java.time.ZonedDateTime;
 
-import org.hibernate.boot.model.internal.Nullability;
-
-import com.google.protobuf.NullValue;
-
-import business.consts.SAError;
-import business.consts.ValidatorMessage;
 import business.customer.Customer;
 import business.customer.CustomerDTO;
-import business.exception.SAAFlightException;
-import business.exception.SAReservationException;
 import business.flightinstance.FlightInstance;
 import business.reservationline.ReservationLine;
 import business.reservationline.ReservationLineDTO;
-import business.result.Result;
-import business.utils.StringUtils;
-import business.utils.ZonedDateUtils;
-import business.validators.Validator;
+import common.consts.SAError;
+import common.consts.ValidatorMessage;
+import common.dto.result.Result;
+import common.exception.SAAFlightException;
+import common.exception.SAReservationException;
+import common.utils.StringUtils;
+import common.utils.ZonedDateUtils;
+import common.validators.Validator;
 import integration.transaction.TransactionManager;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;

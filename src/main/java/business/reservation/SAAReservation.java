@@ -2,7 +2,7 @@ package business.reservation;
 
 import business.customer.CustomerDTO;
 import business.reservationline.ReservationLineDTO;
-import business.result.Result;
+import common.dto.result.Result;
 
 public interface SAAReservation {
 	Result<ReservationDTO> make(final CustomerDTO customer, final ReservationDTO reservationDto, final long idFlightInstance, final int numberOfSeats);

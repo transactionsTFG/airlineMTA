@@ -1,6 +1,6 @@
 package business.flight;
 
-import business.result.Result;
+import common.dto.result.Result;
 
 public interface SAAFlight {
     Result<FlightDTO> search(long idFlight);
