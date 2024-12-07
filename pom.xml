@@ -11,7 +11,7 @@
     <jakartaee>10.0.0</jakartaee>
   </properties>
   <dependencies>
-  
+	
 	<dependency>
 	    <groupId>org.hibernate.orm</groupId>
 	    <artifactId>hibernate-core</artifactId>
@@ -55,7 +55,5 @@
 		<version>2.3</version>
 		<scope>provided</scope>
 	</dependency>
-	
-	
   </dependencies>
 </project>

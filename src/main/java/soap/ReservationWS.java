@@ -47,7 +47,7 @@ public class ReservationWS {
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_RESERVATION)
-    public SoapResponse<ReservationSOAP> search(@WebParam(name = "idReservation") final long idReservation){
+    public SoapResponse<ReservationSOAP> searchReservation(@WebParam(name = "idReservation") final long idReservation){
         final Result<ReservationDTO> result = this.servicesReservation.read(idReservation);
         return SoapResponseMapper
                 .toSoapResponse(result.getMessage(), 
