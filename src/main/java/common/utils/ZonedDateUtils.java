@@ -7,7 +7,7 @@ import common.consts.ValidatorMessage;
 import common.dto.result.Result;
 
 public class ZonedDateUtils {
-    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss VV");;
+    private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss VV");
 	private ZonedDateUtils() {}
 	
 	public static Result<ZonedDateTime> getZonedTime(String time) {

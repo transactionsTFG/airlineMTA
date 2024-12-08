@@ -4,11 +4,13 @@ import common.consts.SAError;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
 import integration.transaction.TransactionManager;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 
+@Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {
-
+	
 	@Override
 	public Result<FlightDTO> search(long idFlight) {
 		Result<FlightDTO> flightDTO = null;

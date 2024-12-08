@@ -1,5 +1,6 @@
 package integration.transaction;
 
+
 public abstract class TransactionFactory {
 	private static TransactionFactory instancia;
 	
@@ -9,6 +10,5 @@ public abstract class TransactionFactory {
 		if (instancia == null) instancia = new TransactionFactoryImp();
 		return instancia;
 	}
-
 	public abstract Transaction getTransaccion();
 }

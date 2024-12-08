@@ -4,11 +4,11 @@ import integration.entitymanagerfactory.SingletonEntityManagerFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
-public class TransactionJPA implements Transaction {
+public class TransactionResourceLocal implements Transaction {
     
     private EntityManager entityManager;
     
-    public TransactionJPA() {
+    public TransactionResourceLocal() {
         this.entityManager = SingletonEntityManagerFactory.getInstance().createEntityManager();
     }
 

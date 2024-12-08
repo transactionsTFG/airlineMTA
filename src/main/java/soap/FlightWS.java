@@ -8,16 +8,19 @@ import common.dto.result.Result;
 import common.dto.soap.response.FlightSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
+import jakarta.ejb.EJB;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 
 @WebService(serviceName = "FlightWS")
 public class FlightWS {
-    private final SAAFlight servicesFlight;
+    
+    @EJB
+    private SAAFlight servicesFlight;
 
     public FlightWS(){
-        this.servicesFlight = FactoriaNegocio.getInstancia().generateServicesFlight();
+        //this.servicesFlight = FactoriaNegocio.getInstancia().generateServicesFlight();
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_FLIGHT)
