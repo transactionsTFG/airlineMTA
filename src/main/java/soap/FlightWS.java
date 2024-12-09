@@ -1,6 +1,5 @@
 package soap;
 
-import business.factorianegocio.FactoriaNegocio;
 import business.flight.FlightDTO;
 import business.flight.SAAFlight;
 import common.consts.WebMethodConsts;
@@ -26,10 +25,10 @@ public class FlightWS {
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_FLIGHT)
     public SoapResponse<FlightSOAP> search(@WebParam(name = "idFlightSearch") final long idFlight){
         final Result<FlightDTO> f = this.servicesFlight.search(idFlight);
+        final FlightSOAP data = f.isSuccess() ? FlightSOAP.toSOAP(f.getData()) : null;
         return SoapResponseMapper
                 .toSoapResponse(f.getMessage(), 
-                                FlightSOAP.toSOAP(f.getData()), 
+                                data, 
                                 f.isSuccess());
     }
-
 }

@@ -17,10 +17,12 @@ import common.utils.StringUtils;
 import common.utils.ZonedDateUtils;
 import common.validators.Validator;
 import integration.transaction.TransactionManager;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
 
+@Stateless
 public class SAAReservationImpl implements SAAReservation {
 	
 	@Override
@@ -69,6 +71,7 @@ public class SAAReservationImpl implements SAAReservation {
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() - numberOfSeats);
 			em.persist(reservationLine);
 			TransactionManager.getInstancia().getTransaccion().commit();
+			em.flush();
 			reservationResponse = Result.success(reservation.toDto());
 		} catch (Exception e) {
 			reservationResponse = Result.failure(e.getMessage());
@@ -143,7 +146,7 @@ public class SAAReservationImpl implements SAAReservation {
 		try {
 			TransactionManager.getInstancia().nuevaTransaccion().start();
 			EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-			Reservation reservation = em.find(Reservation.class, idFlightInstance, LockModeType.OPTIMISTIC);
+			Reservation reservation = em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
 			if (reservation == null) 
 				throw new SAReservationException(SAError.RESERVATION_DONTFOUND);
 			

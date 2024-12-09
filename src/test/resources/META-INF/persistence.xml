@@ -19,7 +19,7 @@
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3308/airline_test"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="password"/>
-			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
+			<property name="jakarta.persistence.schema-generation.database.action" value="update" />
         </properties>
     </persistence-unit>
 </persistence>
