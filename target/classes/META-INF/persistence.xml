@@ -16,7 +16,7 @@
 		<class>business.reservationline.ReservationLine</class>        
         <properties>
             <property name="jakarta.persistence.jtaDataSource" value="jdbc/airline"/>
-            <property name="jakarta.persistence.schema-generation.database.action" value="create-and-drop"/>
+            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
     </persistence-unit>
 </persistence>

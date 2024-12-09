@@ -6,8 +6,10 @@ import java.util.Set;
 
 import business.customer.Customer;
 import business.reservationline.ReservationLine;
+import common.converter.ZonedDateTimeConverter;
 import common.utils.ZonedDateUtils;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +33,7 @@ public class Reservation implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(nullable = false)
+	@Convert(converter = ZonedDateTimeConverter.class)
 	private ZonedDateTime date;
 	private double total;
 	private boolean active;

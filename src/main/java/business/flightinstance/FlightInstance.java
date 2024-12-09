@@ -6,8 +6,10 @@ import java.util.Set;
 
 import business.flight.Flight;
 import business.reservationline.ReservationLine;
+import common.converter.ZonedDateTimeConverter;
 import common.utils.ZonedDateUtils;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,8 +36,10 @@ public class FlightInstance implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(nullable = false)
+	@Convert(converter = ZonedDateTimeConverter.class)
 	private ZonedDateTime departureDate;
 	@Column(nullable = false)
+	@Convert(converter = ZonedDateTimeConverter.class)
 	private ZonedDateTime arrivalDate;
 	@Column(nullable = false)
 	private String statusFlight;
