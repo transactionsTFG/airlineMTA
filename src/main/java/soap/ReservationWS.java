@@ -9,54 +9,59 @@ import common.dto.soap.request.ModifyReservationRequestSOAP;
 import common.dto.soap.response.ReservationSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
-import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 
 @WebService(serviceName = "ReservationWS")
 public class ReservationWS {
-    @EJB
-    private SAAReservation servicesReservation;
 
-    public ReservationWS(){
-        //this.servicesReservation = FactoriaNegocio.getInstancia().generateServicesReservation();
+    private final SAAReservation servicesReservation;
+
+    @Inject
+    public ReservationWS(final SAAReservation servicesReservation){
+        this.servicesReservation = servicesReservation;
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_MAKE_RESERVATION)
     public SoapResponse<ReservationSOAP> make(@WebParam(name="request") MakeReservationRequestSOAP r){
-        final Result<ReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.getReservation(), r.getIdFlight(), r.getNumberOfSeats());
-        final ReservationSOAP data = result.isSuccess() ? ReservationSOAP.toSOAP(result.getData()) : null;
-        return SoapResponseMapper
-                .toSoapResponse(result.getMessage(), 
-                                data, 
-                                result.isSuccess());
+        try {
+            final Result<ReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.getReservation(), r.getIdFlight(), r.getNumberOfSeats());
+            return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
+        } catch (Exception e) {
+            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
+        }
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_CANCEL_RESERVATION)
     public SoapResponse<Void> cancel(@WebParam(name = "idReservation") final long idReservation, @WebParam(name = "idFlightInstance") final long idFlightInstance){
-        final Result<Void> result = this.servicesReservation.cancel(idReservation, idFlightInstance);
-        return SoapResponseMapper.toSoapResponse(result);
+        try {
+            final Result<Void> result = this.servicesReservation.cancel(idReservation, idFlightInstance);
+            return SoapResponseMapper.toSoapResponse(result);
+        } catch(Exception e){
+            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
+        }
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_MODIFY_RESERVATION)
     public SoapResponse<ReservationSOAP> modify(@WebParam(name="request") ModifyReservationRequestSOAP m){
-        final Result<ReservationDTO> result = this.servicesReservation.modify(m.getReservation(), m.getReservationLine());
-        final ReservationSOAP data = result.isSuccess() ? ReservationSOAP.toSOAP(result.getData()) : null;
-        return SoapResponseMapper
-                .toSoapResponse(result.getMessage(), 
-                                data, 
-                                result.isSuccess());
+        try {
+            final Result<ReservationDTO> result = this.servicesReservation.modify(m.getReservation(), m.getReservationLine());
+            return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
+        } catch(Exception e){
+            return  SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
+        }
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_RESERVATION)
     public SoapResponse<ReservationSOAP> searchReservation(@WebParam(name = "idReservation") final long idReservation){
-        final Result<ReservationDTO> result = this.servicesReservation.read(idReservation);
-        final ReservationSOAP data = result.isSuccess() ? ReservationSOAP.toSOAP(result.getData()) : null;
-        return SoapResponseMapper
-                .toSoapResponse(result.getMessage(), 
-                        data, 
-                        result.isSuccess());
+        try {
+            final Result<ReservationDTO> result = this.servicesReservation.read(idReservation);
+            return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
+        } catch(Exception e){
+            return  SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
+        }               
     }
 
 }
