@@ -1,22 +1,21 @@
 package business;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import business.flight.FlightDTO;
-import common.consts.SAError;
 import common.consts.SASuccess;
 import common.dto.result.Result;
+import common.exception.SAException;
 import generatemocks.SAManagerForUnitTest;
 
 public class SAFlightTest extends SAManagerForUnitTest {
 		
 	@Test
-	public void searchTest() {
-		FlightDTO flightDto = GENERATE_ENTITY_MOCK.getFlightMockFirst();
+	public void searchTest() throws SAException {
+		FlightDTO flightDto = GET_MOCK.getFlightMockFirst();
 		Result<FlightDTO> result = SERVICE_FLIGHT.search(flightDto.getId());
 		assertEquals(result.getMessage(), SASuccess.GENERIC);
 		assertTrue(result.isSuccess());
@@ -32,11 +31,8 @@ public class SAFlightTest extends SAManagerForUnitTest {
 	}
 	
 	@Test
-	public void searchDontFoundTest() {
-		Result<FlightDTO> result = SERVICE_FLIGHT.search(-1);
-		assertEquals(result.getMessage(), SAError.FLIGHT_DONTFOUND);
-		assertFalse(result.isSuccess());
-		assertNull(result.getData());
+	public void searchDontFoundTest() throws SAException  {
+		assertThrows(SAException.class, () -> SERVICE_FLIGHT.search(-1));
 	}
 	
 	

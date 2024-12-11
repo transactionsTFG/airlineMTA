@@ -13,13 +13,14 @@
 		<class>business.flight.Flight</class>
 		<class>business.flightinstance.FlightInstance</class>
 		<class>business.reservation.Reservation</class>
-		<class>business.reservationline.ReservationLine</class> 
+		<class>business.reservationline.ReservationLine</class>
+		<class>common.converter.ZonedDateTimeConverter</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3308/airline_test"/>
             <property name="jakarta.persistence.jdbc.user" value="root"/>
             <property name="jakarta.persistence.jdbc.password" value="password"/>
-			<property name="jakarta.persistence.schema-generation.database.action" value="update" />
+			<property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create" />
         </properties>
     </persistence-unit>
 </persistence>

@@ -1,26 +1,18 @@
 package generatemocks;
 
-
 import business.aircraft.Aircraft;
-import business.aircraft.AircraftDTO;
 import business.airport.Airport;
 import business.customer.Customer;
-import business.customer.CustomerDTO;
 import business.flight.Flight;
-import business.flight.FlightDTO;
 import business.flightinstance.FlightInstance;
-import business.flightinstance.FlightInstanceDTO;
 import business.reservation.Reservation;
-import business.reservation.ReservationDTO;
 import business.reservationline.ReservationLine;
-import business.reservationline.ReservationLineDTO;
 import common.utils.ZonedDateUtils;
-import integration.transaction.TransactionManager;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 
 public class GenerateEntityForUnitTest {
 	private static GenerateEntityForUnitTest GENERATE = null;
+	
 	private final EntityManager em;
 	
 	public static synchronized GenerateEntityForUnitTest init() {
@@ -30,92 +22,16 @@ public class GenerateEntityForUnitTest {
 		return GENERATE;
 	}
 	
-	public CustomerDTO getCustomerMockFirst() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<Customer> query = em.createNamedQuery("business.customer.Customer.getAll", Customer.class);
-		query.setMaxResults(1);
-		Customer r = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return r.toDto();
-	}
-	
-	public ReservationDTO getReservationMockFirst() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<Reservation> query = em.createNamedQuery("business.reservation.Reservation.getAll", Reservation.class);
-		query.setMaxResults(1);
-		Reservation r = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return r.toDto();
-	}
-	
-	public AircraftDTO getAircraftMockFirst() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<Aircraft> query = em.createNamedQuery("business.aircraft.Aircraft.getAll", Aircraft.class);
-		query.setMaxResults(1);
-		Aircraft a = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return a.toDto();
-	}
-	
-	public FlightDTO getFlightMockFirst() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<Flight> query = em.createNamedQuery("business.flight.Flight.getAll", Flight.class);
-		query.setMaxResults(1);
-		Flight f = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return f.toDto();
-	}
-	
-	public FlightInstanceDTO getFlightInstanceMockFirst() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<FlightInstance> query = em.createNamedQuery("business.flightinstance.FlightInstance.getAll", FlightInstance.class);
-		query.setMaxResults(1);
-		FlightInstance f = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return f.toDto();
-	}
-	
-	public FlightInstanceDTO getFlightInstanceMockById(final long id) {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		TypedQuery<FlightInstance> query = em.createNamedQuery("business.flightinstance.FlightInstance.ById", FlightInstance.class);
-		query.setParameter("id", id);
-		FlightInstance f = query.getResultStream().findFirst().orElse(null);
-		TransactionManager.getInstancia().getTransaccion().commit();
-		return f.toDto();
-	}
-	
-	public ReservationDTO getReservationMockById(final long id) {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
-		Reservation reservation = em.find(Reservation.class, id);
-		return reservation.toDto();
-	}
-	
-	public ReservationLineDTO reservationLineMockByIdFlightAndIdReservation() {
-		TransactionManager.getInstancia().nuevaTransaccion();
-		EntityManager em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();		
-		TypedQuery<ReservationLine> query = em.createNamedQuery("business.reservationline.ReservationLine.findAll", ReservationLine.class);
-		query.setMaxResults(1);
-		ReservationLine r = query.getResultStream().findFirst().orElse(null);
-		return r.toDto();
-	}
-	
 	private GenerateEntityForUnitTest() {
-		TransactionManager.getInstancia().nuevaTransaccion().start();
-		this.em = (EntityManager) TransactionManager.getInstancia().getTransaccion().getResource();
+		this.em = SingletonEntityManagerFactory.getInstance().createEntityManager();
+		this.em.getTransaction().begin();
 		this.aircraftMock();
 		this.airportMock();
 		this.flightMock();
 		this.customerMock();
 		this.reservationMock();
 		this.reservationLineMock();
-		TransactionManager.getInstancia().nuevaTransaccion().commit();
+		this.em.getTransaction().commit();
 	}
 	
 	private void aircraftMock() {
