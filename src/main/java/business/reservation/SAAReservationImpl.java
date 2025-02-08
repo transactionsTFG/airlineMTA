@@ -12,7 +12,6 @@ import common.consts.SAError;
 import common.consts.ValidatorMessage;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
-import common.exception.SAException;
 import common.exception.SAReservationException;
 import common.utils.StringUtils;
 import common.utils.ZonedDateUtils;
@@ -26,7 +25,9 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class SAAReservationImpl implements SAAReservation {
 	
-	private final EntityManager em;
+	private EntityManager em;
+
+	public SAAReservationImpl(){} //Constructor por defecto para Weblogic
 
 	@Inject
 	public SAAReservationImpl(final EntityManager em){

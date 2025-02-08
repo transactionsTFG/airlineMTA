@@ -12,7 +12,9 @@ import javax.persistence.LockModeType;
 @Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {
 		
-	private final EntityManager em;
+	private EntityManager em;
+
+	public SAAFlightImpl(){}
 
 	@Inject
 	public SAAFlightImpl(final EntityManager em){

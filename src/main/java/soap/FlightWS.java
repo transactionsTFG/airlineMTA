@@ -25,7 +25,7 @@ public class FlightWS {
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_FLIGHT)
-    @Transactional
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<FlightSOAP> search(@WebParam(name = "idFlightSearch") final long idFlight){
         final Result<FlightDTO> f = this.servicesFlight.search(idFlight);
         return SoapResponseMapper.toSoapResponse(f.getMessage(), FlightSOAP.toSOAP(f.getData()), f.isSuccess());
