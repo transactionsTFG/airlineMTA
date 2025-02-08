@@ -4,8 +4,8 @@ import java.time.ZonedDateTime;
 
 import common.dto.result.Result;
 import common.utils.ZonedDateUtils;
-import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class ZonedDateTimeConverter implements AttributeConverter<ZonedDateTime, String>{

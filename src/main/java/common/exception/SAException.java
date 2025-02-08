@@ -1,6 +1,6 @@
 package common.exception;
 
-import jakarta.ejb.ApplicationException;
+import javax.ejb.ApplicationException;
 
 @ApplicationException(rollback = true)
 public class SAException extends Exception {

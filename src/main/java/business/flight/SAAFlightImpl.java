@@ -4,11 +4,11 @@ import common.consts.SAError;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
 import common.exception.SAException;
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
-import jakarta.transaction.Transactional;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.transaction.Transactional;
 
 @Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {

@@ -4,11 +4,10 @@
   <artifactId>mta-airline</artifactId>
   <version>1.0.0</version>
   <packaging>war</packaging>
-  <name>mta-airline</name>
+  <name>airlineMTA</name>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <jakartaee>10.0.0</jakartaee>
   </properties>
   <dependencies>
 	
@@ -30,38 +29,37 @@
     	<version>4.13.2</version>
     	<scope>test</scope>
 	</dependency>
-	
-	<dependency>
-		<groupId>com.sun.xml.ws</groupId>
-        <artifactId>jaxws-rt</artifactId>
-		<version>4.0.3</version>
-	</dependency>
-
-	<dependency>
-		<groupId>org.glassfish.metro</groupId>
-		<artifactId>webservices-rt</artifactId>
-		<version>2.3</version>
-		<scope>provided</scope>
-	</dependency>
 
 	<dependency>
         <groupId>jakarta.platform</groupId>
         <artifactId>jakarta.jakartaee-api</artifactId>
-        <version>10.0.0</version> <!-- Ajusta la versión según tu GlassFish -->
+        <version>8.0.0</version>
         <scope>provided</scope>
     </dependency>
 
 	<dependency>
-		<groupId>jakarta.servlet</groupId>
-		<artifactId>jakarta.servlet-api</artifactId>
-		<version>6.1.0</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>jakarta.persistence</groupId>
-		<artifactId>jakarta.persistence-api</artifactId>
-		<version>3.1.0</version>
+    	<groupId>org.projectlombok</groupId>
+    	<artifactId>lombok</artifactId>
+    	<version>1.18.36</version>
+    	<scope>provided</scope>
 	</dependency>
 	
+	<dependency>
+	    <groupId>com.oracle.weblogic</groupId>
+	    <artifactId>weblogic-server-pom</artifactId>
+	    <version>14.1.2-0-0</version>
+	    <type>pom</type>
+	    <scope>provided</scope>
+	</dependency>
   </dependencies>
+  <build>
+	<finalName>airlineMTA</finalName>
+	<plugins>
+	    <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-war-plugin</artifactId>
+	    	<version>3.3.1</version>
+	    </plugin>
+	</plugins>
+  </build>
 </project>

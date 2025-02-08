@@ -1,20 +1,20 @@
 package business.customer;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 
 import java.io.Serializable;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import java.util.Set;
 
 import business.reservation.Reservation;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Version;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
 
 @Entity
 @NamedQueries({

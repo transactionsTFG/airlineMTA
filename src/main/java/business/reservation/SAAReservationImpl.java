@@ -17,12 +17,12 @@ import common.exception.SAReservationException;
 import common.utils.StringUtils;
 import common.utils.ZonedDateUtils;
 import common.validators.Validator;
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
-import jakarta.persistence.TypedQuery;
-import jakarta.transaction.Transactional;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 @Stateless
 public class SAAReservationImpl implements SAAReservation {

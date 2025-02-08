@@ -9,10 +9,10 @@ import common.dto.soap.request.ModifyReservationRequestSOAP;
 import common.dto.soap.response.ReservationSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
-import jakarta.inject.Inject;
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebParam;
-import jakarta.jws.WebService;
+import javax.inject.Inject;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebService;
 
 @WebService(serviceName = "ReservationWS")
 public class ReservationWS {

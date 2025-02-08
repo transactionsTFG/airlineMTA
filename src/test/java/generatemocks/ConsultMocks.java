@@ -12,9 +12,9 @@ import business.reservation.Reservation;
 import business.reservation.ReservationDTO;
 import business.reservationline.ReservationLine;
 import business.reservationline.ReservationLineDTO;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
-import jakarta.persistence.TypedQuery;
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.TypedQuery;
 
 public class ConsultMocks {
 	private final EntityManager em;

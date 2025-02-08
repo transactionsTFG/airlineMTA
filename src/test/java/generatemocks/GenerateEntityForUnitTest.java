@@ -8,7 +8,7 @@ import business.flightinstance.FlightInstance;
 import business.reservation.Reservation;
 import business.reservationline.ReservationLine;
 import common.utils.ZonedDateUtils;
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 
 public class GenerateEntityForUnitTest {
 	private static GenerateEntityForUnitTest GENERATE = null;
