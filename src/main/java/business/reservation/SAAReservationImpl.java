@@ -22,7 +22,6 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
 @Stateless
 public class SAAReservationImpl implements SAAReservation {
@@ -35,8 +34,7 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	@Transactional
-	public Result<ReservationDTO> make(CustomerDTO customerDto, final ReservationDTO reservationDto, final long idFlightInstance, final int numberOfSeats) throws SAException {
+	public Result<ReservationDTO> make(CustomerDTO customerDto, final ReservationDTO reservationDto, final long idFlightInstance, final int numberOfSeats) {
 		if (StringUtils.isEmpty(customerDto.getName())) 
 			throw new SAReservationException(ValidatorMessage.BAD_NAME);
 		
@@ -83,8 +81,7 @@ public class SAAReservationImpl implements SAAReservation {
 	//TODO: Cambiar la fecha del Vuelo, es decir seria cambiar a otro vuelo
 	//HPOR AHORA NO LO ESTOY TENIENDO EN CUENTA
 	@Override
-	@Transactional
-	public Result<ReservationDTO> modify(final ReservationDTO reservationDto, final ReservationLineDTO reservationLineDto) throws SAException {
+	public Result<ReservationDTO> modify(final ReservationDTO reservationDto, final ReservationLineDTO reservationLineDto) {
 		Result<ZonedDateTime> resultZoned = ZonedDateUtils.getZonedTime(reservationDto.getDate());
 		if (!resultZoned.isSuccess()) 
 			throw new SAReservationException(resultZoned.getMessage());
@@ -132,8 +129,7 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	@Transactional
-	public Result<Void> cancel(final long idReservation, final long idFlightInstance) throws SAException {
+	public Result<Void> cancel(final long idReservation, final long idFlightInstance) {
 		Reservation reservation = em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
 		if (reservation == null) 
 			throw new SAReservationException(SAError.RESERVATION_DONTFOUND);
@@ -156,8 +152,7 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	@Transactional
-	public Result<ReservationDTO> read(long idReservation) throws SAException {
+	public Result<ReservationDTO> read(long idReservation) {
 		Reservation reservation = em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
 		if (reservation == null) 
 			throw new SAReservationException(SAError.RESERVATION_DONTFOUND);

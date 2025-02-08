@@ -7,6 +7,8 @@ import common.dto.result.Result;
 import common.dto.soap.response.FlightSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
+import weblogic.wsee.wstx.wsat.Transactional;
+
 import javax.inject.Inject;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -23,13 +25,9 @@ public class FlightWS {
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_FLIGHT)
+    @Transactional
     public SoapResponse<FlightSOAP> search(@WebParam(name = "idFlightSearch") final long idFlight){
-        try {
-            final Result<FlightDTO> f = this.servicesFlight.search(idFlight);
-            return SoapResponseMapper.toSoapResponse(f.getMessage(), FlightSOAP.toSOAP(f.getData()), f.isSuccess());
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-            return SoapResponseMapper.toSoapResponse(e.getMessage(), null, false);
-        }
+        final Result<FlightDTO> f = this.servicesFlight.search(idFlight);
+        return SoapResponseMapper.toSoapResponse(f.getMessage(), FlightSOAP.toSOAP(f.getData()), f.isSuccess());
     }
 }

@@ -8,7 +8,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.transaction.Transactional;
 
 @Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {
@@ -21,7 +20,6 @@ public class SAAFlightImpl implements SAAFlight {
 	}
 
 	@Override
-	@Transactional
 	public Result<FlightDTO> search(long idFlight) throws SAException {
 		Flight flight = this.em.find(Flight.class, idFlight, LockModeType.OPTIMISTIC);
 		if (flight == null) 
