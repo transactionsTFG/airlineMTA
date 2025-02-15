@@ -22,9 +22,12 @@ D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\consts\SA
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\consts\ValidatorMessage.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\consts\WebMethodConsts.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\converter\ZonedDateTimeConverter.java
+D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\flight\FlightData.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\result\Result.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\request\MakeReservationRequestSOAP.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\request\ModifyReservationRequestSOAP.java
+D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\request\ParamFlightSOAP.java
+D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\response\FlightDataListSOAP.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\response\FlightSOAP.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\response\ReservationSOAP.java
 D:\Universidad\4Carrera\TFG\repository\airlineMTA\src\main\java\common\dto\soap\response\SoapResponse.java

@@ -1,4 +1,5 @@
 common\utils\StringUtils.class
+common\dto\flight\FlightData.class
 business\aircraft\AircraftDTO.class
 business\flight\SAAFlight.class
 business\aircraft\Aircraft.class
@@ -29,6 +30,7 @@ common\dto\result\Result.class
 integration\database\EntityManagerProducer.class
 soap\FlightWS.class
 common\dto\soap\request\MakeReservationRequestSOAP.class
+common\dto\soap\request\ParamFlightSOAP.class
 common\consts\WebMethodConsts.class
 common\exception\SAException.class
 integration\environment\JUnitEnv.class
@@ -36,8 +38,10 @@ business\reservation\SAAReservationImpl.class
 business\flight\Flight.class
 common\dto\soap\response\SoapResponse.class
 business\flightinstance\FlightInstance.class
+common\dto\flight\FlightData$FlightDataBuilder.class
 business\flight\FlightDTO.class
 integration\environment\GlassFishEnv.class
+common\dto\soap\response\FlightDataListSOAP.class
 business\reservation\SAAReservation.class
 common\exception\SAAFlightException.class
 business\reservationline\ReservationLineDTO.class
