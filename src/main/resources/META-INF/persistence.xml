@@ -15,8 +15,8 @@
 		<class>business.reservation.Reservation</class>
 		<class>business.reservationline.ReservationLine</class>        
         <properties>
-            <property name="jakarta.persistence.jtaDataSource" value="jdbc/airline"/>
-            <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+            <property name="javax.persistence.jtaDataSource" value="jdbc/airline"/>
+            <property name="javax.persistence.schema-generation.database.action" value="update"/>
         </properties>
     </persistence-unit>
 </persistence>
