@@ -39,7 +39,7 @@ public class SAAFlightImpl implements SAAFlight {
 
 	@Override
 	public Result<FlightDTO> search(long idFlight) throws SAException {
-		Flight flight = this.em.find(Flight.class, idFlight, LockModeType.OPTIMISTIC);
+		Flight flight = this.em.find(Flight.class, idFlight, LockModeType.NONE);
 		if (flight == null) 
 			throw new SAAFlightException(SAError.FLIGHT_DONTFOUND);
 			
