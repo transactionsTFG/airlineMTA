@@ -148,26 +148,27 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	public Result<Void> cancel(final long idReservation, final long idFlightInstance) {
+	public Result<Void> cancel(final long idReservation) {
 		Reservation reservation = em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
 		if (reservation == null) 
 			throw new SAReservationException(SAError.RESERVATION_DONTFOUND);
 		
-		FlightInstance flightInstance = em.find(FlightInstance.class, idFlightInstance, LockModeType.OPTIMISTIC);
-		if (flightInstance == null) 
-			throw new SAReservationException(SAError.FLIGHT_INSTANCE_DONTFOUND);			
-		
-		TypedQuery<ReservationLine> query = em.createNamedQuery("business.reservationline.ReservationLine.findByFlightAndReservation", ReservationLine.class);
+				
+		TypedQuery<ReservationLine> query = em.createNamedQuery("business.reservationline.ReservationLine.findByReservation", ReservationLine.class);
 		query.setParameter("idReservation", idReservation);
-		query.setParameter("idFlightInstance", idFlightInstance);
-		ReservationLine reservationLine = query
-											.getResultStream()
-											.findFirst()
-											.orElseThrow(() -> new SAReservationException(SAError.RESERVATION_LINE_DONTFOUND));
-		flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + reservationLine.getPassengerCount());
-		em.remove(reservationLine);
+		
+		List<ReservationLine> reservationLine = query.getResultList();
+		if (reservationLine.isEmpty()) 
+			throw new SAReservationException(SAError.RESERVATION_LINE_DONTFOUND);
+		
+		reservationLine.stream().forEach(reservationLineElement -> {
+			FlightInstance flightInstance = reservationLineElement.getFlightInstance();
+			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + reservationLineElement.getPassengerCount());
+			this.em.merge(flightInstance);
+			this.em.remove(reservationLineElement);
+		});
 		reservation.setActive(false);
-		return  Result.success(null);
+		return Result.success(null);
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class ReservationWS {
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_MAKE_RESERVATION)
-    //@Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<ReservationSOAP> make(@WebParam(name="request") MakeReservationRequestSOAP r){
         final Result<ReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.getReservation(), r.toFlightSeatsMap());
         return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
@@ -38,8 +38,8 @@ public class ReservationWS {
 
     @WebMethod(operationName=WebMethodConsts.OP_CANCEL_RESERVATION)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<Void> cancel(@WebParam(name = "idReservation") final long idReservation, @WebParam(name = "idFlightInstance") final long idFlightInstance){
-        final Result<Void> result = this.servicesReservation.cancel(idReservation, idFlightInstance);
+    public SoapResponse<Void> cancel(@WebParam(name = "idReservation") final long idReservation){
+        final Result<Void> result = this.servicesReservation.cancel(idReservation);
         return SoapResponseMapper.toSoapResponse(result);
     }
 

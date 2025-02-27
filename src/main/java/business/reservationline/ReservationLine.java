@@ -14,11 +14,10 @@ import javax.persistence.Version;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "business.reservationline.ReservationLine.findByFlightAndReservation",
-				query = "SELECT rl FROM ReservationLine rl WHERE rl.reservation.id = :idReservation AND rl.flightInstance.id = :idFlightInstance"),	
+	@NamedQuery(name = "business.reservationline.ReservationLine.findByReservation",
+				query = "SELECT rl FROM ReservationLine rl WHERE rl.reservation.id = :idReservation"),	
 	@NamedQuery(name = "business.reservationline.ReservationLine.findAll",
 				query = "SELECT rl FROM ReservationLine rl")
-
 })
 public class ReservationLine implements Serializable {
 	private static final long serialVersionUID = 0;
