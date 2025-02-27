@@ -1,6 +1,7 @@
 package business;
 
 import java.time.ZoneId;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,16 +31,16 @@ public class SAReservationTest extends SAManagerForUnitTest {
 		CustomerDTO badc8 = new CustomerDTO("jose", "jose@email.com", "123456789", "dni", true);
 		CustomerDTO badc9 = new CustomerDTO("jose", "jose@email.com", "123456789", "5744081XK", true);
 		CustomerDTO badc10 = new CustomerDTO("jose", "jose@email.com", "123456789", "574408191", true);
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc1, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc2, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc3, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc4, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc5, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc6, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc7, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc8, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc9, null, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc10, null, 0, 0));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc1, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc2, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc3, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc4, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc5, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc6, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc7, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc8, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc9, null, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(badc10, null, new HashMap<>()));
 	}
 	
 	@Test
@@ -49,19 +50,19 @@ public class SAReservationTest extends SAManagerForUnitTest {
 		String badDate = "28/11/2024 10:30:00";
 		ReservationDTO reservationDTO1 = new ReservationDTO(badDate, 100, true);
 		ReservationDTO reservationDTO2 = new ReservationDTO(null, 100, true);
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO1, 0, 0));
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO2, 0, 0));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO1, new HashMap<>()));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO2, new HashMap<>()));
 
 		
 		ReservationDTO reservationDTO3 = new ReservationDTO(goodDate, 100, true);
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO3, -1, 0));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO3, new HashMap<>()));
 
 		
 		ReservationDTO reservationDTO4 = new ReservationDTO(goodDate, 100, true);	
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO4, -1, 1));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO4, new HashMap<>()));
 		
 		FlightInstanceDTO flight1 = GET_MOCK.getFlightInstanceMockFirst();
-		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO4, flight1.getId(), 99999999));
+		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, reservationDTO4, new HashMap<>()));
 	}
 	
 	@Test
@@ -70,7 +71,7 @@ public class SAReservationTest extends SAManagerForUnitTest {
 		ReservationDTO r = new ReservationDTO("28/11/2024 10:30:00 " + ZoneId.systemDefault(), 100, true);
 		FlightInstanceDTO flight = GET_MOCK.getFlightInstanceMockFirst();
 		int seats = 2;
-		Result<ReservationDTO> result = SERVICE_RESERVATION.make(c, r, flight.getId(), seats);
+		Result<ReservationDTO> result = SERVICE_RESERVATION.make(c, r,new HashMap<>());
 		assertNotNull(result.getData());
 		ReservationDTO reser = result.getData();
 		assertTrue(reser.getId() > 0);

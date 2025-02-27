@@ -45,6 +45,12 @@
 	</dependency>
 	
 	<dependency>
+    	<groupId>org.mapstruct</groupId>
+    	<artifactId>mapstruct</artifactId>
+    	<version>1.6.3</version>
+	</dependency>
+
+	<dependency>
 	    <groupId>com.oracle.weblogic</groupId>
 	    <artifactId>weblogic-server-pom</artifactId>
 	    <version>14.1.2-0-0</version>

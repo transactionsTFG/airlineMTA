@@ -2,6 +2,11 @@ package business.reservation;
 
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import business.customer.Customer;
 import business.customer.CustomerDTO;
@@ -16,6 +21,8 @@ import common.exception.SAReservationException;
 import common.utils.StringUtils;
 import common.utils.ZonedDateUtils;
 import common.validators.Validator;
+import weblogic.jdbc.sqlserver.base.fl;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -35,7 +42,7 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	public Result<ReservationDTO> make(CustomerDTO customerDto, final ReservationDTO reservationDto, final long idFlightInstance, final int numberOfSeats) {
+	public Result<ReservationDTO> make(CustomerDTO customerDto, final ReservationDTO reservationDto, final Map<Long, Integer> listIdFlightInstanceWithSeatMap) {
 		if (StringUtils.isEmpty(customerDto.getName())) 
 			throw new SAReservationException(ValidatorMessage.BAD_NAME);
 		
@@ -52,8 +59,6 @@ public class SAAReservationImpl implements SAAReservation {
 		if (!resultZoned.isSuccess()) 
 			throw new SAReservationException(resultZoned.getMessage());
 		
-		if (0 >= numberOfSeats) 
-			throw new SAReservationException(SAError.FLIGHT_BUY_SEATS);
 		
 		Customer customer = em.find(Customer.class, customerDto.getId(), LockModeType.OPTIMISTIC);
 		if (customer == null) {
@@ -65,16 +70,29 @@ public class SAAReservationImpl implements SAAReservation {
 		Reservation reservation = new Reservation(resultZoned.getData(), reservationDto.getTotal(), 
 													reservationDto.isActive(), customer);
 		em.persist(reservation);
-		FlightInstance flightInstance = em.find(FlightInstance.class, idFlightInstance, LockModeType.OPTIMISTIC);
-		if (flightInstance == null) 
+
+		List<FlightInstance> listFlightInstance = em.createQuery("SELECT f FROM FlightInstance f WHERE f.id IN :ids", FlightInstance.class)
+													.setParameter("ids", listIdFlightInstanceWithSeatMap.keySet())
+													.getResultList(); 
+
+		if (listFlightInstance.size() != listIdFlightInstanceWithSeatMap.size()) 
 			throw new SAReservationException(SAError.FLIGHT_INSTANCE_DONTFOUND);
 		
-		if (numberOfSeats > flightInstance.getPassengerCounter()) 
-			throw new SAAFlightException(SAError.FLIGHT_SEATS_FULL);
-		
-		ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeats);
-		flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() - numberOfSeats);
-		em.persist(reservationLine);
+		List<ReservationLine> listReservationLines = new ArrayList<>();
+		listFlightInstance.stream().forEach(flightInstance -> {
+			final int capacitySeatsAircraft = flightInstance.getFlight().getAircraft().getCapacity();
+			System.out.println("capacitySeatsAircraft: " + capacitySeatsAircraft);
+			System.out.println("FLIGTTTTTTTTTTTTTTTB " + flightInstance.getPassengerCounter() + listIdFlightInstanceWithSeatMap.get(flightInstance.getId()));
+			if (capacitySeatsAircraft < flightInstance.getPassengerCounter() + listIdFlightInstanceWithSeatMap.get(flightInstance.getId())) 
+				throw new SAAFlightException(SAError.FLIGHT_SEATS_FULL);
+			else {
+				flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + listIdFlightInstanceWithSeatMap.get(flightInstance.getId()));
+				ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, listIdFlightInstanceWithSeatMap.get(flightInstance.getId()));
+				listReservationLines.add(reservationLine);
+			}
+		}) ;
+
+		listReservationLines.stream().forEach(em::persist);
 		em.flush();
 		return Result.success(reservation.toDto());
 	}

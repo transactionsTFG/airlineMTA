@@ -44,6 +44,8 @@ public class FlightInstance implements Serializable {
 	@Column(nullable = false)
 	private String statusFlight;
 	private int passengerCounter;
+	@Column(nullable = false)
+	private double price;
 	private boolean active;
 	@ManyToOne(optional = false)
 	private Flight flight;

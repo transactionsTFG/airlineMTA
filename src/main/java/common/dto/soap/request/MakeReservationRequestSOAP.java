@@ -2,13 +2,24 @@ package common.dto.soap.request;
 
 import business.customer.CustomerDTO;
 import business.reservation.ReservationDTO;
+import common.dto.flight.IdFlightInstanceWithSeatsDTO;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "MakeReservationRequestSOAP")
 @XmlAccessorType(XmlAccessType.FIELD)
+@Getter
+@Setter
 public class MakeReservationRequestSOAP {
     @XmlElement
     private CustomerDTO customer;
@@ -16,50 +27,22 @@ public class MakeReservationRequestSOAP {
     @XmlElement
     private ReservationDTO reservation;
 
-    @XmlElement
-    private long idFlight;
-
-    @XmlElement
-    private int numberOfSeats;
+    @XmlElementWrapper(name = "flights")
+    @XmlElement(name = "flight")
+    private List<IdFlightInstanceWithSeatsDTO> idsFlightWithSeats;
 
     public MakeReservationRequestSOAP() {}
 
-    public MakeReservationRequestSOAP(CustomerDTO customer, ReservationDTO reservation, long idFlight, int numberOfSeats) {
+    public MakeReservationRequestSOAP(CustomerDTO customer, ReservationDTO reservation, List<IdFlightInstanceWithSeatsDTO> listIdFlight) {
         this.customer = customer;
         this.reservation = reservation;
-        this.idFlight = idFlight;
-        this.numberOfSeats = numberOfSeats;
+        this.idsFlightWithSeats = listIdFlight;
+    
     }
 
-    public CustomerDTO getCustomer() {
-        return customer;
+    public Map<Long, Integer> toFlightSeatsMap() {
+        return idsFlightWithSeats.stream()
+            .collect(Collectors.toMap(IdFlightInstanceWithSeatsDTO::getIdFlightInstance, IdFlightInstanceWithSeatsDTO::getSeats));
     }
 
-    public void setCustomer(CustomerDTO customer) {
-        this.customer = customer;
-    }
-
-    public ReservationDTO getReservation() {
-        return reservation;
-    }
-
-    public void setReservation(ReservationDTO reservation) {
-        this.reservation = reservation;
-    }
-
-    public long getIdFlight() {
-        return idFlight;
-    }
-
-    public void setIdFlight(long idFlight) {
-        this.idFlight = idFlight;
-    }
-
-    public int getNumberOfSeats() {
-        return numberOfSeats;
-    }
-
-    public void setNumberOfSeats(int numberOfSeats) {
-        this.numberOfSeats = numberOfSeats;
-    }
 }
