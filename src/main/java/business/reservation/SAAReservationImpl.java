@@ -148,7 +148,7 @@ public class SAAReservationImpl implements SAAReservation {
 		double price = reservationLine.stream().mapToDouble(reservationLineElement -> {
 			FlightInstance flightInstance = reservationLineElement.getFlightInstance();
 			final double priceFlightCancel = reservationLineElement.getPrice();
-			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + reservationLineElement.getPassengerCount());
+			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() - reservationLineElement.getPassengerCount());
 			this.em.merge(flightInstance);
 			this.em.remove(reservationLineElement);
 			return priceFlightCancel;

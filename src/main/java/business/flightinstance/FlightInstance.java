@@ -8,6 +8,8 @@ import business.flight.Flight;
 import business.reservationline.ReservationLine;
 import common.converter.ZonedDateTimeConverter;
 import common.utils.ZonedDateUtils;
+import lombok.AllArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -29,6 +31,7 @@ import javax.persistence.Version;
 				query = "SELECT f FROM FlightInstance f WHERE f.id = :id")
 
 })
+@AllArgsConstructor
 public class FlightInstance implements Serializable {
 	
 	private static final long serialVersionUID = 4017621675253975021L;
