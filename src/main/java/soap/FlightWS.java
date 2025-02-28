@@ -36,7 +36,7 @@ public class FlightWS {
     }
     
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_FLIGHTS)
-    public List<FlightDataListSOAP> searchFlight(@WebParam(name = "paramSearch") final ParamFlightSOAP param){
+    public List<FlightDataListSOAP> getListSearchFlight(@WebParam(name = "paramSearch") final ParamFlightSOAP param){
         List<FlightData> flights =  this.servicesFlight
                     .searchWithParams(param.getCountryOrigin(), 
                                       param.getCountryDestination(), 

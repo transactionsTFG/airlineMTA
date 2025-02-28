@@ -14,11 +14,10 @@ import javax.persistence.Version;
 
 @Entity
 @NamedQueries({
-	@NamedQuery(name = "business.reservationline.ReservationLine.findByFlightAndReservation",
-				query = "SELECT rl FROM ReservationLine rl WHERE rl.reservation.id = :idReservation AND rl.flightInstance.id = :idFlightInstance"),	
+	@NamedQuery(name = "business.reservationline.ReservationLine.findByReservation",
+				query = "SELECT rl FROM ReservationLine rl WHERE rl.reservation.id = :idReservation"),	
 	@NamedQuery(name = "business.reservationline.ReservationLine.findAll",
 				query = "SELECT rl FROM ReservationLine rl")
-
 })
 public class ReservationLine implements Serializable {
 	private static final long serialVersionUID = 0;
@@ -36,15 +35,21 @@ public class ReservationLine implements Serializable {
 	
 	private int passengerCount;
 	
+	private double price;
+
+	private boolean active;
+
 	@Version
 	private int version;
 	public ReservationLine() {}
 	
-	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount) {
+	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount, double price, boolean active) {
 		super();
 		this.flightInstance = flightInstance;
 		this.reservation = reservation;
 		this.passengerCount = passengerCount;
+		this.price = price;
+		this.active = active;
 	}
 	
 	public ReservationLineIds getIds() {
@@ -78,8 +83,22 @@ public class ReservationLine implements Serializable {
 		this.version = version;
 	}
 	
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public ReservationLineDTO toDto() {
-		return new ReservationLineDTO(this.flightInstance.getId(), this.reservation.getId(), passengerCount);
+		return new ReservationLineDTO(this.flightInstance.getId(), passengerCount);
 	}
 	
 }

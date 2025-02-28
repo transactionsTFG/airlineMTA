@@ -109,10 +109,10 @@ public class GenerateEntityForUnitTest {
 		Customer c2 = new Customer("Jose5", "jose2@gmail.com", "123456781", "45814885N", true);
 		Reservation r1 = new Reservation(ZonedDateUtils.getZonedTime("28/11/2024 10:30:00 Europe/London").getData(), 400, true, c1);
 		Reservation r2 = new Reservation(ZonedDateUtils.getZonedTime("28/12/2024 10:30:00 Europe/London").getData(), 700, true, c2);		
-		ReservationLine reservationLine = new ReservationLine(flightInstace1, r1, 1);
-		ReservationLine reservationLine2 = new ReservationLine(flightInstace2, r1, 2);
-		ReservationLine reservationLine3 = new ReservationLine(flightInstace1, r2, 1);
-		ReservationLine reservationLine4 = new ReservationLine(flightInstace2, r2, 2);
+		ReservationLine reservationLine = new ReservationLine(flightInstace1, r1, 1, 1000, true);
+		ReservationLine reservationLine2 = new ReservationLine(flightInstace1, r1, 2, 1000, true);
+		ReservationLine reservationLine3 = new ReservationLine(flightInstace1, r2, 1, 1000, true);
+		ReservationLine reservationLine4 = new ReservationLine(flightInstace2, r2, 2, 1000, true);
 		this.em.persist(aircraft);
 		this.em.persist(airport);
 		this.em.persist(airport2);

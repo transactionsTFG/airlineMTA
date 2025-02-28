@@ -47,6 +47,13 @@ public class Reservation implements Serializable {
 	private int version;
 	
 	public Reservation() {}
+
+	public Reservation(Customer c) { //Constructor for make reservation
+		this.date = ZonedDateUtils.now();
+		this.total = 0;
+		this.active = true;
+		this.customer = c;
+	}
 	
 	public Reservation(ZonedDateTime date, double total, boolean active, Customer c) {
 		super();
