@@ -35,15 +35,18 @@ public class ReservationLine implements Serializable {
 	
 	private int passengerCount;
 	
+	private double price;
+
 	@Version
 	private int version;
 	public ReservationLine() {}
 	
-	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount) {
+	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount, double price) {
 		super();
 		this.flightInstance = flightInstance;
 		this.reservation = reservation;
 		this.passengerCount = passengerCount;
+		this.price = price;
 	}
 	
 	public ReservationLineIds getIds() {
@@ -77,8 +80,14 @@ public class ReservationLine implements Serializable {
 		this.version = version;
 	}
 	
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
 	public ReservationLineDTO toDto() {
-		return new ReservationLineDTO(this.flightInstance.getId(), this.reservation.getId(), passengerCount);
+		return new ReservationLineDTO(this.flightInstance.getId(), passengerCount);
 	}
 	
 }

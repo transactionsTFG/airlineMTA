@@ -23,4 +23,8 @@ public class ZonedDateUtils {
 	public static String parseString(ZonedDateTime time) {
 		return time.format(FORMATTER);
 	}
+
+	public static ZonedDateTime now() {
+		return ZonedDateTime.now();
+	}
 }

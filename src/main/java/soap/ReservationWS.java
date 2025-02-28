@@ -32,21 +32,21 @@ public class ReservationWS {
     @WebMethod(operationName=WebMethodConsts.OP_MAKE_RESERVATION)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<ReservationSOAP> make(@WebParam(name="request") MakeReservationRequestSOAP r){
-        final Result<ReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.getReservation(), r.toFlightSeatsMap());
+        final Result<ReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.toFlightSeatsMap());
         return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_CANCEL_RESERVATION)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<Void> cancel(@WebParam(name = "idReservation") final long idReservation){
-        final Result<Void> result = this.servicesReservation.cancel(idReservation);
+    public SoapResponse<Double> cancel(@WebParam(name = "idReservation") final long idReservation){
+        final Result<Double> result = this.servicesReservation.cancel(idReservation);
         return SoapResponseMapper.toSoapResponse(result);
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_MODIFY_RESERVATION)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<ReservationSOAP> modify(@WebParam(name="request") ModifyReservationRequestSOAP m){
-        final Result<ReservationDTO> result = this.servicesReservation.modify(m.getReservation(), m.getReservationLine());
+        final Result<ReservationDTO> result = this.servicesReservation.modify(m.getIdReservation(), m.getIdCustomer(), m.getIdFlightInstanceWithSeatsMap());
         return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
     }
 

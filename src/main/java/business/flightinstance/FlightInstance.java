@@ -143,6 +143,13 @@ public class FlightInstance implements Serializable {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
 	
 	public FlightInstanceDTO toDto() {
 		return new FlightInstanceDTO(this.id, 
