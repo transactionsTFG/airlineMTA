@@ -37,16 +37,19 @@ public class ReservationLine implements Serializable {
 	
 	private double price;
 
+	private boolean active;
+
 	@Version
 	private int version;
 	public ReservationLine() {}
 	
-	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount, double price) {
+	public ReservationLine(FlightInstance flightInstance, Reservation reservation, int passengerCount, double price, boolean active) {
 		super();
 		this.flightInstance = flightInstance;
 		this.reservation = reservation;
 		this.passengerCount = passengerCount;
 		this.price = price;
+		this.active = active;
 	}
 	
 	public ReservationLineIds getIds() {
@@ -86,6 +89,14 @@ public class ReservationLine implements Serializable {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
 	public ReservationLineDTO toDto() {
 		return new ReservationLineDTO(this.flightInstance.getId(), passengerCount);
 	}

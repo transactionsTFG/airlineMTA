@@ -11,9 +11,11 @@ import business.flightinstance.FlightInstance;
 import business.reservationline.ReservationLine;
 import common.consts.SAError;
 import common.consts.ValidatorMessage;
+import common.dto.reservation.UpdateReservationDTO;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
 import common.exception.SAReservationException;
+import common.mapper.ReservationMapper;
 import common.utils.StringUtils;
 import common.validators.Validator;
 
@@ -75,7 +77,7 @@ public class SAAReservationImpl implements SAAReservation {
 			final int numberOfSeatsForFlight = idFlightInstanceWithSeatMap.get(flightInstance.getId());
 			final double totalPriceFlight = flightInstance.getPrice() * numberOfSeatsForFlight;
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + idFlightInstanceWithSeatMap.get(flightInstance.getId()));
-			ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeatsForFlight, totalPriceFlight);
+			ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeatsForFlight, totalPriceFlight, true);
 			listReservationLines.add(reservationLine);
 			return totalPriceFlight;
 		}).sum();
@@ -86,8 +88,8 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	public Result<ReservationDTO> modify(final long idReservation, final long idCustomer, final Map<Long, Integer> idFlightInstanceWithSeatsMap) {
-		if (idFlightInstanceWithSeatsMap.isEmpty() || idFlightInstanceWithSeatsMap.entrySet().stream().anyMatch(entry -> entry.getValue() <= 0)) 
+	public Result<UpdateReservationDTO> modify(final long idReservation, final long idCustomer, final Map<Long, Integer> idFlightInstanceWithSeatsMap) {
+		if (idFlightInstanceWithSeatsMap.isEmpty() || idFlightInstanceWithSeatsMap.entrySet().stream().anyMatch(entry -> entry.getValue() <= -1)) 
 			throw new SAReservationException(SAError.FLIGHT_BUY_SEATS);
 		
 		Customer customer = this.em.find(Customer.class, idCustomer, LockModeType.OPTIMISTIC);
@@ -106,30 +108,48 @@ public class SAAReservationImpl implements SAAReservation {
 			throw new SAReservationException(SAError.RESERVATION_LINE_DONTFOUND);
 
 		double updatePriceReservation = listReservationLines.stream().mapToDouble(reservationLineLast -> {
-			final int seatsOfIdFlightModify = idFlightInstanceWithSeatsMap.get(reservationLineLast.getReservation().getId());
+			final long idFlightModify = reservationLineLast.getFlightInstance().getId();
+			if (!idFlightInstanceWithSeatsMap.containsKey(idFlightModify)) 
+				return 0;
+
+			final int seatsOfIdFlightModify = idFlightInstanceWithSeatsMap.get(idFlightModify);
+			if(seatsOfIdFlightModify == 0) {
+				final double priceReturn = reservationLineLast.getPrice();
+				final int seats = reservationLineLast.getPassengerCount();
+				reservationLineLast.getFlightInstance().setPassengerCounter(reservationLineLast.getFlightInstance().getPassengerCounter() - seats);
+				reservationLast.setTotal(reservationLast.getTotal() - priceReturn);
+				this.em.remove(reservationLineLast);
+				return -priceReturn;
+			}
+				
 			final int newSeats = seatsOfIdFlightModify - reservationLineLast.getPassengerCount();
 			final int deleteSeats = reservationLineLast.getPassengerCount() - seatsOfIdFlightModify;
+			double updatePrice = 0;
 			if(newSeats > 0) {
-				final int totalSeats = reservationLineLast.getFlightInstance().getPassengerCounter() - newSeats;
-				if (0 > totalSeats) 
+				final int totalSeats = reservationLineLast.getFlightInstance().getPassengerCounter() + newSeats;
+				if (totalSeats > reservationLineLast.getFlightInstance().getFlight().getAircraft().getCapacity()) 
 					throw new SAReservationException(SAError.FLIGHT_SEATS_FULL);
 				final int newSeatsForFlight = reservationLineLast.getPassengerCount() + newSeats;
 				reservationLineLast.setPassengerCount(newSeatsForFlight);
 				reservationLineLast.setPrice(reservationLineLast.getFlightInstance().getPrice() * newSeatsForFlight);
 				reservationLineLast.getFlightInstance().setPassengerCounter(totalSeats);
+				updatePrice = reservationLineLast.getFlightInstance().getPrice() * newSeats;
 			}
 
 			if (deleteSeats > 0) {
-				final int updateSeats = reservationLineLast.getPassengerCount() - seatsOfIdFlightModify;
-				reservationLineLast.getFlightInstance().setPassengerCounter(reservationLineLast.getFlightInstance().getPassengerCounter() + deleteSeats);
+				final int updateSeats = reservationLineLast.getPassengerCount() - deleteSeats;
+				reservationLineLast.getFlightInstance().setPassengerCounter(reservationLineLast.getFlightInstance().getPassengerCounter() - deleteSeats);
 				reservationLineLast.setPassengerCount(updateSeats);
 				reservationLineLast.setPrice(reservationLineLast.getFlightInstance().getPrice() * updateSeats);
+				updatePrice = -reservationLineLast.getFlightInstance().getPrice() * deleteSeats;
 			}
 			this.em.merge(reservationLineLast);
-			return reservationLineLast.getPrice();
+			return updatePrice;
 		}).sum();
-		reservationLast.setTotal(updatePriceReservation);
-		return Result.success(reservationLast.toDto());
+
+		double total = listReservationLines.stream().mapToDouble(ReservationLine::getPrice).sum();
+		reservationLast.setTotal(total);
+		return Result.success(ReservationMapper.INSTANCE.toUpdateRevervationDTO(reservationLast.toDto(), updatePriceReservation));
 	}
 
 	@Override
@@ -149,8 +169,9 @@ public class SAAReservationImpl implements SAAReservation {
 			FlightInstance flightInstance = reservationLineElement.getFlightInstance();
 			final double priceFlightCancel = reservationLineElement.getPrice();
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() - reservationLineElement.getPassengerCount());
+			reservationLineElement.setActive(false);
 			this.em.merge(flightInstance);
-			this.em.remove(reservationLineElement);
+			this.em.merge(reservationLineElement);
 			return priceFlightCancel;
 		}).sum();
 		reservation.setActive(false);

@@ -3,11 +3,14 @@ package soap;
 import business.reservation.ReservationDTO;
 import business.reservation.SAAReservation;
 import common.consts.WebMethodConsts;
+import common.dto.reservation.UpdateReservationDTO;
 import common.dto.result.Result;
 import common.dto.soap.request.MakeReservationRequestSOAP;
 import common.dto.soap.request.ModifyReservationRequestSOAP;
 import common.dto.soap.response.ReservationSOAP;
 import common.dto.soap.response.SoapResponse;
+import common.dto.soap.response.UpdateReservationSOAP;
+import common.mapper.ReservationMapper;
 import common.mapper.SoapResponseMapper;
 
 import java.util.Map;
@@ -45,9 +48,9 @@ public class ReservationWS {
 
     @WebMethod(operationName=WebMethodConsts.OP_MODIFY_RESERVATION)
     //@Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
-    public SoapResponse<ReservationSOAP> modify(@WebParam(name="request") ModifyReservationRequestSOAP m){
-        final Result<ReservationDTO> result = this.servicesReservation.modify(m.getIdReservation(), m.getIdCustomer(), m.toFlightSeatsMap());
-        return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationSOAP.toSOAP(result.getData()), result.isSuccess());
+    public SoapResponse<UpdateReservationSOAP> modify(@WebParam(name="request") ModifyReservationRequestSOAP m){
+        final Result<UpdateReservationDTO> result = this.servicesReservation.modify(m.getIdReservation(), m.getIdCustomer(), m.toFlightSeatsMap());
+        return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationMapper.INSTANCE.toUpdateReservationSOAP(result.getData()), result.isSuccess());
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_SEARCH_RESERVATION)
