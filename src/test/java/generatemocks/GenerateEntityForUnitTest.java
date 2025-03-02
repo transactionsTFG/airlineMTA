@@ -2,6 +2,7 @@ package generatemocks;
 
 import business.aircraft.Aircraft;
 import business.airport.Airport;
+import business.country.Country;
 import business.customer.Customer;
 import business.flight.Flight;
 import business.flightinstance.FlightInstance;
@@ -44,18 +45,20 @@ public class GenerateEntityForUnitTest {
 	}
 	
 	private void airportMock() {
-		Airport airport1 = new Airport("Aeropuerto 1", "Ciudad", "Portugal", "Codigo", true);
-		Airport airport2 = new Airport("Aeropuerto 2", "Ciudad2", "España", "Codigo2", true);
-		Airport airport3 = new Airport("Aeropuerto 3", "Ciudad3", "Francia", "Codigo3", true);
+		Country c1 = new Country();
+		Airport airport1 = new Airport("Aeropuerto 1", "Ciudad", c1, "Codigo", true);
+		Airport airport2 = new Airport("Aeropuerto 2", "Ciudad2", c1, "Codigo2", true);
+		Airport airport3 = new Airport("Aeropuerto 3", "Ciudad3", c1, "Codigo3", true);
 		this.em.persist(airport1);
 		this.em.persist(airport2);
 		this.em.persist(airport3);
 	}
 	
 	private void flightMock() {
+		Country c1 = new Country();
 		Aircraft aircraft = new Aircraft(100, "Modelo4", true);
-		Airport airport = new Airport("Aeropuerto 4", "Ciudad", "Italia", "Codigo", true);
-		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", "Alemania", "Codigo", true);
+		Airport airport = new Airport("Aeropuerto 4", "Ciudad", c1, "Codigo", true);
+		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", c1, "Codigo", true);
 		Flight flight1 = new Flight("CODIGO-1", "Jueves", "2022", "2023", true, aircraft, airport, airport2);
 		Flight flight2 = new Flight("CODIGO-2", "Jueves", "2023", "2024", true, aircraft, airport2, airport);
 		FlightInstance flightInstace1 = new FlightInstance(ZonedDateUtils.getZonedTime("28/11/2024 10:30:00 Europe/London").getData(),
@@ -94,9 +97,10 @@ public class GenerateEntityForUnitTest {
 	}
 	
 	private void reservationLineMock() {
+		Country ck = new Country();
 		Aircraft aircraft = new Aircraft(100, "Modelo4", true);
-		Airport airport = new Airport("Aeropuerto 4", "Ciudad", "Italia", "Codigo", true);
-		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", "Alemania", "Codigo", true);
+		Airport airport = new Airport("Aeropuerto 4", "Ciudad", ck, "Codigo", true);
+		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", ck, "Codigo", true);
 		Flight flight1 = new Flight("CODIGO-1", "Jueves", "2022", "2023", true, aircraft, airport, airport2);
 		Flight flight2 = new Flight("CODIGO-2", "Jueves", "2023", "2024", true, aircraft, airport2, airport);
 		FlightInstance flightInstace1 = new FlightInstance(ZonedDateUtils.getZonedTime("28/11/2024 10:30:00 Europe/London").getData(),

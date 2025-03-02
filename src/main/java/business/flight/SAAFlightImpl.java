@@ -8,10 +8,12 @@ import common.exception.SAException;
 import common.utils.ZonedDateUtils;
 
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 
+import java.sql.Date;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,8 @@ import javax.persistence.LockModeType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Root;
 
+import business.airport.Airport;
+import business.country.Country;
 import business.flightinstance.FlightInstance;
 
 @Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
@@ -52,45 +56,51 @@ public class SAAFlightImpl implements SAAFlight {
 		CriteriaQuery<FlightData> cq = cb.createQuery(FlightData.class);
 		Root<Flight> flight = cq.from(Flight.class);
 		Join<Flight, FlightInstance> flightInstance = flight.join("flightInstance", JoinType.INNER);
+		Join<Flight, Airport> originAirport = flight.join("origin", JoinType.INNER);
+		Join<Flight, Airport> destinationAirport = flight.join("destination", JoinType.INNER);
+		Join<Airport, Country> originCountry = originAirport.join("country", JoinType.INNER);
+		Join<Airport, Country> destinationCountry = destinationAirport.join("country", JoinType.INNER);
 
-        List<Predicate> predicates = new ArrayList<>();
+		List<Predicate> predicates = new ArrayList<>();
 
 		predicates.add(cb.equal(flight.get("active"), true));
-		
+
 		if (countryOrigin != null && !countryOrigin.isEmpty()) 
-			predicates.add(cb.equal(flight.get("origin").get("country"), countryOrigin));
-	
+			predicates.add(cb.equal(originCountry.get("name"), countryOrigin));
+
 		if (countryDestination != null && !countryDestination.isEmpty()) 
-			predicates.add(cb.equal(flight.get("destination").get("country"), countryDestination));
-	
+			predicates.add(cb.equal(destinationCountry.get("name"), countryDestination));
+
 		if (cityOrigin != null && !cityOrigin.isEmpty()) 
-			predicates.add(cb.equal(flight.get("origin").get("city"), cityOrigin));
-	
+			predicates.add(cb.equal(originAirport.get("city"), cityOrigin));
+
 		if (cityDestination != null && !cityDestination.isEmpty()) 
-			predicates.add(cb.equal(flight.get("destination").get("city"), cityDestination));
-	
+			predicates.add(cb.equal(destinationAirport.get("city"), cityDestination));
+
 		if (dateOrigin != null && !dateOrigin.isEmpty()) {
-			Result<ZonedDateTime> dateOriginZoned = ZonedDateUtils.getZonedTime(dateOrigin);
-			if (dateOriginZoned.isSuccess()) {
-				predicates.add(cb.greaterThanOrEqualTo(flightInstance.get("departureDate"), dateOriginZoned.getData())); 
+			if (ZonedDateUtils.isValidateDateFilter(dateOrigin).isSuccess()) {
+				Expression<java.sql.Date> departureDateExpr = cb.function("DATE", Date.class,
+    				cb.function("STR_TO_DATE", Date.class, flightInstance.get("departureDate"), cb.literal("%d/%m/%Y")));
+
+				Expression<java.sql.Date> inputDateExpr = cb.function("STR_TO_DATE", Date.class, 
+					cb.literal(dateOrigin), cb.literal("%d/%m/%Y"));
+				predicates.add(cb.greaterThanOrEqualTo( departureDateExpr, inputDateExpr)); 
 			} else {
 				throw new SAAFlightException("Formato de fecha inválido: " + dateOrigin);
 			}
 		}
-	
+
 		cq.select(cb.construct(FlightData.class, 
 			flight.get("id"),
 			flightInstance.get("arrivalDate"),
-    		flightInstance.get("departureDate"),
-			flight.get("destination").get("city"),
-			flight.get("origin").get("country"),
-			flight.get("destination").get("country"),
+			flightInstance.get("departureDate"),
+			destinationAirport.get("city"),
+			originCountry.get("name"),
+			destinationCountry.get("name"),
 			flight.get("weekDay"))
 		).where(predicates.toArray(new Predicate[0]));
 
-
-        return em
-				.createQuery(cq)
-				.getResultList();
+		return em.createQuery(cq).getResultList();
 	}
+
 }

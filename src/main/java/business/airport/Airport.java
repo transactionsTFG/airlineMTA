@@ -7,9 +7,14 @@ import javax.persistence.GenerationType;
 
 import java.io.Serializable;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import java.util.Set;
 
+import business.country.Country;
 import business.flight.Flight;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 
@@ -24,8 +29,9 @@ public class Airport implements Serializable {
 	private String name;
 	@Column(nullable = false)
 	private String city;
-	@Column(nullable = false)
-	private String country;
+	@ManyToOne(optional = false)
+	@JoinColumn(nullable = false)
+	private Country country;
 	@Column(nullable = false)
 	private String codeName;
 	@OneToMany(mappedBy = "origin")
@@ -38,7 +44,7 @@ public class Airport implements Serializable {
 	
 	public Airport() {}
 		
-	public Airport(String name, String city, String country, String codeName, boolean active) {
+	public Airport(String name, String city, Country country, String codeName, boolean active) {
 		super();
 		this.name = name;
 		this.city = city;
@@ -65,10 +71,10 @@ public class Airport implements Serializable {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
 	}
-	public void setCountry(String country) {
+	public void setCountry(Country country) {
 		this.country = country;
 	}
 	public String getCodeName() {
