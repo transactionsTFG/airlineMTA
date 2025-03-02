@@ -13,7 +13,6 @@ import common.dto.soap.response.UpdateReservationSOAP;
 import common.mapper.ReservationMapper;
 import common.mapper.SoapResponseMapper;
 
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.jws.WebMethod;
