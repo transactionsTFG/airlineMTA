@@ -14,7 +14,6 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 
 import java.sql.Date;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
