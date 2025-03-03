@@ -19,7 +19,9 @@ import javax.persistence.Version;
 @Entity
 @NamedQueries({
 	@NamedQuery(name = "business.customer.Customer.getAll",
-				query = "SELECT c FROM Customer c")
+				query = "SELECT c FROM Customer c"),
+	@NamedQuery(name = "business.customer.Customer.getCustomerByDni",
+				query = "SELECT c FROM Customer c WHERE c.dni = :dni"),
 
 })
 public class Customer implements Serializable {
@@ -34,7 +36,7 @@ public class Customer implements Serializable {
 	private String email;
 	@Column(nullable = false)
 	private String phone;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String dni;
 	private boolean active;
 	@OneToMany(mappedBy = "customer")

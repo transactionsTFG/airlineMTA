@@ -51,7 +51,9 @@ public class SAAReservationImpl implements SAAReservation {
 		if (!Validator.isDni(customerDto.getDni())) 
 			throw new SAReservationException(ValidatorMessage.BAD_DNI);
 		
-		Customer customer = em.find(Customer.class, customerDto.getId(), LockModeType.OPTIMISTIC);
+		Customer customer = em.createNamedQuery("business.customer.Customer.getCustomerByDni", Customer.class)
+								.setParameter("dni", customerDto.getDni())
+								.getResultList().stream().findFirst().orElse(null);
 		if (customer == null) {
 			customer = new Customer(customerDto.getName(), customerDto.getEmail(), 
 									customerDto.getPhone(), customerDto.getDni(), 
