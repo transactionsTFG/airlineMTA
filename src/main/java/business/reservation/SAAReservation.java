@@ -9,7 +9,7 @@ import common.dto.result.Result;
 
 public interface SAAReservation {
 	Result<NewReservationDTO> make(final CustomerDTO customer, final Map<Long, Integer> listIdFlightInstance);
-	Result<UpdateReservationDTO> modify(final long idReservation, final long idCustomer, final Map<Long, Integer> idFlightInstanceWithSeatsMap);
+	Result<UpdateReservationDTO> modify(final long idReservation, final Map<Long, Integer> idFlightInstanceWithSeatsMap);
 	Result<Double> cancel(final long idReservation);
 	Result<ReservationDTO> read(final long idReservation);
 }

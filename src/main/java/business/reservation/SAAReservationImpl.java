@@ -95,13 +95,9 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	public Result<UpdateReservationDTO> modify(final long idReservation, final long idCustomer, final Map<Long, Integer> idFlightInstanceWithSeatsMap) {
+	public Result<UpdateReservationDTO> modify(final long idReservation, final Map<Long, Integer> idFlightInstanceWithSeatsMap) {
 		if (idFlightInstanceWithSeatsMap.isEmpty() || idFlightInstanceWithSeatsMap.entrySet().stream().anyMatch(entry -> entry.getValue() <= -1)) 
 			throw new SAReservationException(SAError.FLIGHT_BUY_SEATS);
-		
-		Customer customer = this.em.find(Customer.class, idCustomer, LockModeType.OPTIMISTIC);
-		if (customer == null) 
-			throw new SAReservationException(SAError.CUSTOMER_DONTFOUND);
 		
 		Reservation reservationLast = em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
 		if (reservationLast == null) 

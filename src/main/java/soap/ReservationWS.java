@@ -50,7 +50,7 @@ public class ReservationWS {
     @WebMethod(operationName=WebMethodConsts.OP_MODIFY_RESERVATION)
     @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<UpdateReservationSOAP> modify(@WebParam(name="request") ModifyReservationRequestSOAP m){
-        final Result<UpdateReservationDTO> result = this.servicesReservation.modify(m.getIdReservation(), m.getIdCustomer(), m.toFlightSeatsMap());
+        final Result<UpdateReservationDTO> result = this.servicesReservation.modify(m.getIdReservation(), m.toFlightSeatsMap());
         return SoapResponseMapper.toSoapResponse(result.getMessage(), ReservationMapper.INSTANCE.toUpdateReservationSOAP(result.getData()), result.isSuccess());
     }
 

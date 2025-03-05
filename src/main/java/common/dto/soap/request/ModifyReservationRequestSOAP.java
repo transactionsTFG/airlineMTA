@@ -28,8 +28,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ModifyReservationRequestSOAP {
     @XmlElement
     private long idReservation;
-    @XmlElement
-    private long idCustomer;
     @XmlElementWrapper(name = "flights")
     @XmlElement(name = "flight")
     private List<IdFlightInstanceWithSeatsDTO> idFlightInstanceWithSeats;
