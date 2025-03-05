@@ -13,6 +13,7 @@ import common.consts.SAError;
 import common.consts.ValidatorMessage;
 import common.dto.reservation.NewReservationDTO;
 import common.dto.reservation.StatusFlightDTO;
+import common.dto.reservation.UpdatePriceReservationDTO;
 import common.dto.reservation.UpdateReservationDTO;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
@@ -84,7 +85,7 @@ public class SAAReservationImpl implements SAAReservation {
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + idFlightInstanceWithSeatMap.get(flightInstance.getId()));
 			ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeatsForFlight, totalPriceFlight, true);
 			listReservationLines.add(reservationLine);
-			statusList.add(new StatusFlightDTO(flightInstance.getStatusFlight(), flightInstance.getDepartureDate().toString(), numberOfSeatsForFlight));
+			statusList.add(new StatusFlightDTO(flightInstance.getStatusFlight(), flightInstance.getDepartureDate().toString(), numberOfSeatsForFlight, totalPriceFlight));
 			return totalPriceFlight;
 		}).sum();
 		reservation.setTotal(total);
@@ -109,7 +110,7 @@ public class SAAReservationImpl implements SAAReservation {
 		List<ReservationLine> listReservationLines = query.getResultList();
 		if (listReservationLines.isEmpty()) 
 			throw new SAReservationException(SAError.RESERVATION_LINE_DONTFOUND);
-
+		List<UpdatePriceReservationDTO> updatePriceReservationList = new ArrayList<>();
 		double updatePriceReservation = listReservationLines.stream().mapToDouble(reservationLineLast -> {
 			final long idFlightModify = reservationLineLast.getFlightInstance().getId();
 			if (!idFlightInstanceWithSeatsMap.containsKey(idFlightModify)) 
@@ -122,6 +123,7 @@ public class SAAReservationImpl implements SAAReservation {
 				reservationLineLast.getFlightInstance().setPassengerCounter(reservationLineLast.getFlightInstance().getPassengerCounter() - seats);
 				reservationLast.setTotal(reservationLast.getTotal() - priceReturn);
 				this.em.remove(reservationLineLast);
+				updatePriceReservationList.add(new UpdatePriceReservationDTO(reservationLineLast.getFlightInstance().getId(), -priceReturn));
 				return -priceReturn;
 			}
 				
@@ -133,18 +135,22 @@ public class SAAReservationImpl implements SAAReservation {
 				if (totalSeats > reservationLineLast.getFlightInstance().getFlight().getAircraft().getCapacity()) 
 					throw new SAReservationException(SAError.FLIGHT_SEATS_FULL);
 				final int newSeatsForFlight = reservationLineLast.getPassengerCount() + newSeats;
+				final double newPriceForSeatsTotal = reservationLineLast.getFlightInstance().getPrice() * newSeatsForFlight;
 				reservationLineLast.setPassengerCount(newSeatsForFlight);
-				reservationLineLast.setPrice(reservationLineLast.getFlightInstance().getPrice() * newSeatsForFlight);
+				reservationLineLast.setPrice(newPriceForSeatsTotal);
 				reservationLineLast.getFlightInstance().setPassengerCounter(totalSeats);
 				updatePrice = reservationLineLast.getFlightInstance().getPrice() * newSeats;
+				updatePriceReservationList.add(new UpdatePriceReservationDTO(reservationLineLast.getFlightInstance().getId(), newPriceForSeatsTotal));
 			}
 
 			if (deleteSeats > 0) {
 				final int updateSeats = reservationLineLast.getPassengerCount() - deleteSeats;
+				final double newPriceForSeatsTotal = reservationLineLast.getFlightInstance().getPrice() * updateSeats;
 				reservationLineLast.getFlightInstance().setPassengerCounter(reservationLineLast.getFlightInstance().getPassengerCounter() - deleteSeats);
 				reservationLineLast.setPassengerCount(updateSeats);
 				reservationLineLast.setPrice(reservationLineLast.getFlightInstance().getPrice() * updateSeats);
 				updatePrice = -reservationLineLast.getFlightInstance().getPrice() * deleteSeats;
+				updatePriceReservationList.add(new UpdatePriceReservationDTO(reservationLineLast.getFlightInstance().getId(), newPriceForSeatsTotal));
 			}
 			this.em.merge(reservationLineLast);
 			return updatePrice;
@@ -152,7 +158,7 @@ public class SAAReservationImpl implements SAAReservation {
 
 		double total = listReservationLines.stream().mapToDouble(ReservationLine::getPrice).sum();
 		reservationLast.setTotal(total);
-		return Result.success(ReservationMapper.INSTANCE.toUpdateRevervationDTO(reservationLast.toDto(), updatePriceReservation));
+		return Result.success(ReservationMapper.INSTANCE.toUpdateRevervationDTO(reservationLast.toDto(), updatePriceReservation, updatePriceReservationList));
 	}
 
 	@Override

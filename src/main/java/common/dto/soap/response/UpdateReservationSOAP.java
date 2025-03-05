@@ -1,5 +1,7 @@
 package common.dto.soap.response;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -23,4 +25,6 @@ public class UpdateReservationSOAP {
     private boolean active;
     @XmlElement
     private double updatePrice;
+    @XmlElement
+    private List<UpdatePriceReservationSOAP> updatePriceReservationSOAP;
 }

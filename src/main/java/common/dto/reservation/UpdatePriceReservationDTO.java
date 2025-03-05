@@ -5,9 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class StatusFlightDTO {
-    private String status;
-    private String returnDate;
-    private int seats;
+public class UpdatePriceReservationDTO {
+    private long idFlightInstance;
     private double price;
 }

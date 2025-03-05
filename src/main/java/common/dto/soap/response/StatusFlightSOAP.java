@@ -19,9 +19,12 @@ public class StatusFlightSOAP {
     private String returnDate;
     @XmlElement
     private int seats;
+    @XmlElement
+    private double price;
     public StatusFlightSOAP(StatusFlightDTO s){
         this.status = s.getStatus();
         this.returnDate = s.getReturnDate();
         this.seats = s.getSeats();
+        this.price = s.getPrice();
     }
 }
