@@ -34,7 +34,7 @@ public class ReservationWS {
     }
 
     @WebMethod(operationName=WebMethodConsts.OP_MAKE_RESERVATION)
-    //@Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
+    @Transactional(version = Transactional.Version.WSAT12, value = Transactional.TransactionFlowType.MANDATORY)
     public SoapResponse<NewReservationSOAP> make(@WebParam(name="request") MakeReservationRequestSOAP r){
         final Result<NewReservationDTO> result = this.servicesReservation.make(r.getCustomer(), r.toFlightSeatsMap());
         return SoapResponseMapper.toSoapResponse(result.getMessage(), new NewReservationSOAP().toSOAP(result.getData()), result.isSuccess());
