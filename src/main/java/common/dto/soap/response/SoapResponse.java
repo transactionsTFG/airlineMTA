@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement(name = "SoapResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({FlightSOAP.class, ReservationSOAP.class, UpdateReservationSOAP.class})
+@XmlSeeAlso({FlightSOAP.class, ReservationSOAP.class, UpdateReservationSOAP.class, NewReservationSOAP.class})
 public class SoapResponse<T> {
     @XmlElement
     private boolean success;

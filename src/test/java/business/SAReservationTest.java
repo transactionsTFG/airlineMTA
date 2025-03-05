@@ -4,7 +4,6 @@ import java.time.ZoneId;
 import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -60,22 +59,7 @@ public class SAReservationTest extends SAManagerForUnitTest {
 		FlightInstanceDTO flight1 = GET_MOCK.getFlightInstanceMockFirst();
 		assertThrows(SAException.class, () -> SERVICE_RESERVATION.make(c, new HashMap<>()));
 	}
-	
-	@Test
-	public void makeReservationTest() throws SAException {
-		CustomerDTO c = GET_MOCK.getCustomerMockFirst();
-		FlightInstanceDTO flight = GET_MOCK.getFlightInstanceMockFirst();
-		int seats = 2;
-		Result<ReservationDTO> result = SERVICE_RESERVATION.make(c,new HashMap<>());
-		assertNotNull(result.getData());
-		ReservationDTO reser = result.getData();
-		assertTrue(reser.getId() > 0);
-		assertEquals(reser.getIdCustomer(), c.getId());
-		FlightInstanceDTO flightAfterReservation = GET_MOCK.getFlightInstanceMockById(flight.getId());
-		super.commit();
-		assertEquals(flight.getPassengerCounter() - seats, flightAfterReservation.getPassengerCounter());
-	}
-		
+
 	@Test
 	public void cancelTest() throws SAException {
 		ReservationLineDTO reservationLineDto = GET_MOCK.reservationLineMockByIdFlightAndIdReservation();

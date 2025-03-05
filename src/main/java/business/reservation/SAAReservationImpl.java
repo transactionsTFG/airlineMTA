@@ -11,6 +11,8 @@ import business.flightinstance.FlightInstance;
 import business.reservationline.ReservationLine;
 import common.consts.SAError;
 import common.consts.ValidatorMessage;
+import common.dto.reservation.NewReservationDTO;
+import common.dto.reservation.StatusFlightDTO;
 import common.dto.reservation.UpdateReservationDTO;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
@@ -38,7 +40,7 @@ public class SAAReservationImpl implements SAAReservation {
 	}
 
 	@Override
-	public Result<ReservationDTO> make(CustomerDTO customerDto, final Map<Long, Integer> idFlightInstanceWithSeatMap) {
+	public Result<NewReservationDTO> make(CustomerDTO customerDto, final Map<Long, Integer> idFlightInstanceWithSeatMap) {
 		if (StringUtils.isEmpty(customerDto.getName())) 
 			throw new SAReservationException(ValidatorMessage.BAD_NAME);
 		
@@ -70,6 +72,7 @@ public class SAAReservationImpl implements SAAReservation {
 		if (listFlightInstance.size() != idFlightInstanceWithSeatMap.size()) 
 			throw new SAReservationException(SAError.FLIGHT_INSTANCE_DONTFOUND);
 		
+		List<StatusFlightDTO> statusList = new ArrayList<>();
 		List<ReservationLine> listReservationLines = new ArrayList<>();
 		double total = listFlightInstance.stream().mapToDouble(flightInstance -> {
 			final int capacitySeatsAircraft = flightInstance.getFlight().getAircraft().getCapacity();
@@ -81,12 +84,14 @@ public class SAAReservationImpl implements SAAReservation {
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + idFlightInstanceWithSeatMap.get(flightInstance.getId()));
 			ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeatsForFlight, totalPriceFlight, true);
 			listReservationLines.add(reservationLine);
+			statusList.add(new StatusFlightDTO(flightInstance.getStatusFlight(), flightInstance.getDepartureDate().toString(), numberOfSeatsForFlight));
 			return totalPriceFlight;
 		}).sum();
 		reservation.setTotal(total);
 		listReservationLines.stream().forEach(em::persist);
 		em.flush();
-		return Result.success(reservation.toDto());
+		NewReservationDTO newReservationDTO = new NewReservationDTO(reservation.getId(), reservation.getDate().toString(), total, statusList);
+		return Result.success(newReservationDTO);
 	}
 
 	@Override
