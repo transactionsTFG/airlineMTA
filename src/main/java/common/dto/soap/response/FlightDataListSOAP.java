@@ -1,5 +1,8 @@
 package common.dto.soap.response;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -17,9 +20,9 @@ public class FlightDataListSOAP {
     @XmlElement
     private long id;
     @XmlElement
-    private String arrivalTime;
+    private LocalDate arrivalDate;
     @XmlElement
-    private String departureTime;
+    private LocalDate departureDate;
     @XmlElement
     private String cityDestination;
     @XmlElement
@@ -31,8 +34,8 @@ public class FlightDataListSOAP {
 
     public FlightDataListSOAP toSOAP(final FlightData flightData) {
         this.id = flightData.getId();
-        this.arrivalTime = flightData.getArrivalTime().toString();
-        this.departureTime = flightData.getDepartureTime().toString();
+        this.arrivalDate = flightData.getArrivalDate();
+        this.departureDate = flightData.getDepartureDate();
         this.cityDestination = flightData.getCityDestination();
         this.countryOrigin = flightData.getCountryOrigin();
         this.countryDestination = flightData.getCountryDestination();

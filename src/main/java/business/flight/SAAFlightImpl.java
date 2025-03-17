@@ -14,6 +14,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,12 +79,8 @@ public class SAAFlightImpl implements SAAFlight {
 
 		if (dateOrigin != null && !dateOrigin.isEmpty()) {
 			if (ZonedDateUtils.isValidateDateFilter(dateOrigin).isSuccess()) {
-				Expression<java.sql.Date> departureDateExpr = cb.function("DATE", Date.class,
-    				cb.function("STR_TO_DATE", Date.class, flightInstance.get("departureDate"), cb.literal("%d/%m/%Y")));
-
-				Expression<java.sql.Date> inputDateExpr = cb.function("STR_TO_DATE", Date.class, 
-					cb.literal(dateOrigin), cb.literal("%d/%m/%Y"));
-				predicates.add(cb.greaterThanOrEqualTo( departureDateExpr, inputDateExpr)); 
+				 Expression<LocalDate> departureDateExpr = flightInstance.get("departureDate");
+				 predicates.add(cb.greaterThanOrEqualTo(departureDateExpr, cb.literal(LocalDate.parse(dateOrigin))));
 			} else {
 				throw new SAAFlightException("Formato de fecha inválido: " + dateOrigin);
 			}

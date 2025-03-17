@@ -1,5 +1,7 @@
 package common.dto.flight;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
 import lombok.AllArgsConstructor;
@@ -16,8 +18,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FlightData {
     private long id;
-    private ZonedDateTime arrivalTime;
-    private ZonedDateTime departureTime;
+    private LocalDate arrivalDate;
+    private LocalDate departureDate;
     private String cityDestination;
     private String countryOrigin;
     private String countryDestination;

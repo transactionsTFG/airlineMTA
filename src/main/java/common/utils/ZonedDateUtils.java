@@ -10,7 +10,7 @@ import common.dto.result.Result;
 
 public class ZonedDateUtils {
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss VV");
-    private final static DateTimeFormatter FORMATTER_FILTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private final static DateTimeFormatter FORMATTER_FILTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private ZonedDateUtils() {}
 	
 	public static Result<ZonedDateTime> getZonedTime(String time) {
