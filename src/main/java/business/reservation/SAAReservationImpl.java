@@ -85,7 +85,7 @@ public class SAAReservationImpl implements SAAReservation {
 			flightInstance.setPassengerCounter(flightInstance.getPassengerCounter() + idFlightInstanceWithSeatMap.get(flightInstance.getId()));
 			ReservationLine reservationLine = new ReservationLine(flightInstance, reservation, numberOfSeatsForFlight, totalPriceFlight, true);
 			listReservationLines.add(reservationLine);
-			statusList.add(new StatusFlightDTO(flightInstance.getStatusFlight(), flightInstance.getDepartureDate().toString(), numberOfSeatsForFlight, totalPriceFlight));
+			statusList.add(new StatusFlightDTO(flightInstance.getStatusFlight(), flightInstance.getFlight().getDepartureTime(), flightInstance.getDepartureDate(), numberOfSeatsForFlight, totalPriceFlight));
 			return totalPriceFlight;
 		}).sum();
 		reservation.setTotal(total);

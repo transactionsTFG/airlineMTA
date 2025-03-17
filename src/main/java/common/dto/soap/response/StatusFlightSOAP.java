@@ -1,5 +1,8 @@
 package common.dto.soap.response;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,7 +19,9 @@ public class StatusFlightSOAP {
     @XmlElement
     private String status;
     @XmlElement
-    private String returnDate;
+    private LocalTime timeDate;
+    @XmlElement
+    private LocalDate returnDate;
     @XmlElement
     private int seats;
     @XmlElement
@@ -24,6 +29,7 @@ public class StatusFlightSOAP {
     public StatusFlightSOAP(StatusFlightDTO s){
         this.status = s.getStatus();
         this.returnDate = s.getReturnDate();
+        this.timeDate = s.getTimeReturnDate();
         this.seats = s.getSeats();
         this.price = s.getPrice();
     }
