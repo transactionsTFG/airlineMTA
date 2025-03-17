@@ -1,26 +1,25 @@
 package business.flightinstance;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 import business.flight.Flight;
 import business.reservationline.ReservationLine;
-import common.converter.ZonedDateTimeConverter;
-import common.utils.ZonedDateUtils;
 import lombok.AllArgsConstructor;
 
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
+
 
 
 @Entity
@@ -39,11 +38,9 @@ public class FlightInstance implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	@Column(nullable = false)
-	@Convert(converter = ZonedDateTimeConverter.class)
-	private ZonedDateTime departureDate;
+	private LocalDate departureDate;
 	@Column(nullable = false)
-	@Convert(converter = ZonedDateTimeConverter.class)
-	private ZonedDateTime arrivalDate;
+	private LocalDate arrivalDate;
 	@Column(nullable = false)
 	private String statusFlight;
 	private int passengerCounter;
@@ -61,7 +58,7 @@ public class FlightInstance implements Serializable {
 	
 	public FlightInstance() {}
 	
-	public FlightInstance(ZonedDateTime departureDate, ZonedDateTime arrivalDate, String statusFlight,
+	public FlightInstance(LocalDate departureDate, LocalDate arrivalDate, String statusFlight,
 			int passengerCounter, boolean active, Flight flight) {
 		super();
 		this.departureDate = departureDate;
@@ -72,8 +69,6 @@ public class FlightInstance implements Serializable {
 		this.flight = flight;
 	}
 
-
-
 	public long getId() {
 		return id;
 	}
@@ -83,19 +78,19 @@ public class FlightInstance implements Serializable {
 	}
 
 	
-	public ZonedDateTime getDepartureDate() {
+	public LocalDate getDepartureDate() {
 		return departureDate;
 	}
 
-	public void setDepartureDate(ZonedDateTime departureDate) {
+	public void setDepartureDate(LocalDate departureDate) {
 		this.departureDate = departureDate;
 	}
 
-	public ZonedDateTime getArrivalDate() {
+	public LocalDate getArrivalDate() {
 		return arrivalDate;
 	}
 
-	public void setArrivalDate(ZonedDateTime arrivalDate) {
+	public void setArrivalDate(LocalDate arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
 
@@ -156,8 +151,8 @@ public class FlightInstance implements Serializable {
 	
 	public FlightInstanceDTO toDto() {
 		return new FlightInstanceDTO(this.id, 
-									 ZonedDateUtils.parseString(this.arrivalDate), 
-									 ZonedDateUtils.parseString(this.departureDate), 
+									this.arrivalDate, 
+									this.departureDate, 
 									 statusFlight, passengerCounter, this.getFlight().getId(), active);
 	}
 }

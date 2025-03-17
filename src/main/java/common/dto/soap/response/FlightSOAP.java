@@ -1,6 +1,9 @@
 package common.dto.soap.response;
 
 import business.flight.FlightDTO;
+
+import java.time.LocalTime;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,9 +19,9 @@ public class FlightSOAP {
     @XmlElement
     private String weekDay;
     @XmlElement
-    private String arrivalTime;
+    private LocalTime arrivalTime;
     @XmlElement
-    private String departureTime;
+    private LocalTime departureTime;
     @XmlElement
     private long idAircraft;
     @XmlElement
@@ -46,16 +49,16 @@ public class FlightSOAP {
 	public void setWeekDay(String weekDay) {
 		this.weekDay = weekDay;
 	}
-	public String getArrivalTime() {
+	public LocalTime getArrivalTime() {
 		return arrivalTime;
 	}
-	public void setArrivalTime(String arrivalTime) {
+	public void setArrivalTime(LocalTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
-	public String getDepartureTime() {
+	public LocalTime getDepartureTime() {
 		return departureTime;
 	}
-	public void setDepartureTime(String departureTime) {
+	public void setDepartureTime(LocalTime departureTime) {
 		this.departureTime = departureTime;
 	}
 	public long getIdAircraft() {

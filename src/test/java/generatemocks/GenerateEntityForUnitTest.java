@@ -9,6 +9,10 @@ import business.flightinstance.FlightInstance;
 import business.reservation.Reservation;
 import business.reservationline.ReservationLine;
 import common.utils.ZonedDateUtils;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.persistence.EntityManager;
 
 public class GenerateEntityForUnitTest {
@@ -59,13 +63,13 @@ public class GenerateEntityForUnitTest {
 		Aircraft aircraft = new Aircraft(100, "Modelo4", true);
 		Airport airport = new Airport("Aeropuerto 4", "Ciudad", c1, "Codigo", true);
 		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", c1, "Codigo", true);
-		Flight flight1 = new Flight("CODIGO-1", "Jueves", "2022", "2023", true, aircraft, airport, airport2);
-		Flight flight2 = new Flight("CODIGO-2", "Jueves", "2023", "2024", true, aircraft, airport2, airport);
-		FlightInstance flightInstace1 = new FlightInstance(ZonedDateUtils.getZonedTime("28/11/2024 10:30:00 Europe/London").getData(),
-														  ZonedDateUtils.getZonedTime("29/11/2024 10:30:00 Europe/London").getData(),
+		Flight flight1 = new Flight("CODIGO-1", "Jueves", LocalTime.now(), LocalTime.now(), true, aircraft, airport, airport2);
+		Flight flight2 = new Flight("CODIGO-2", "Jueves", LocalTime.now(), LocalTime.now(), true, aircraft, airport2, airport);
+		FlightInstance flightInstace1 = new FlightInstance(LocalDate.now(),
+														   LocalDate.now(),
 														  "DISPONIBLE", 15, true, flight1);
-		FlightInstance flightInstace2 = new FlightInstance(ZonedDateUtils.getZonedTime("29/11/2024 10:30:00 Europe/London").getData(),
-				  ZonedDateUtils.getZonedTime("30/11/2024 10:30:00 Europe/London").getData(),
+		FlightInstance flightInstace2 = new FlightInstance(LocalDate.now(),
+															LocalDate.now(),
 				  "DISPONIBLE", 15, true, flight2);
 		this.em.persist(aircraft);
 		this.em.persist(airport);
@@ -101,13 +105,13 @@ public class GenerateEntityForUnitTest {
 		Aircraft aircraft = new Aircraft(100, "Modelo4", true);
 		Airport airport = new Airport("Aeropuerto 4", "Ciudad", ck, "Codigo", true);
 		Airport airport2 = new Airport("Aeropuerto 5", "Ciudad", ck, "Codigo", true);
-		Flight flight1 = new Flight("CODIGO-1", "Jueves", "2022", "2023", true, aircraft, airport, airport2);
-		Flight flight2 = new Flight("CODIGO-2", "Jueves", "2023", "2024", true, aircraft, airport2, airport);
-		FlightInstance flightInstace1 = new FlightInstance(ZonedDateUtils.getZonedTime("28/11/2024 10:30:00 Europe/London").getData(),
-														  ZonedDateUtils.getZonedTime("29/11/2024 10:30:00 Europe/London").getData(),
+		Flight flight1 = new Flight("CODIGO-1", "Jueves", LocalTime.now(), LocalTime.now(), true, aircraft, airport, airport2);
+		Flight flight2 = new Flight("CODIGO-2", "Jueves", LocalTime.now(), LocalTime.now(), true, aircraft, airport2, airport);
+		FlightInstance flightInstace1 = new FlightInstance(LocalDate.now(),
+															LocalDate.now(),
 														  "DISPONIBLE", 15, true, flight1);
-		FlightInstance flightInstace2 = new FlightInstance(ZonedDateUtils.getZonedTime("29/11/2024 10:30:00 Europe/London").getData(),
-				  ZonedDateUtils.getZonedTime("30/11/2024 10:30:00 Europe/London").getData(),
+		FlightInstance flightInstace2 = new FlightInstance(LocalDate.now(),
+															LocalDate.now(),
 				  "DISPONIBLE", 15, true, flight2);
 		Customer c1 = new Customer("Jose4", "jose1@gmail.com", "123456789", "45814884N", true);
 		Customer c2 = new Customer("Jose5", "jose2@gmail.com", "123456781", "45814885N", true);

@@ -1,9 +1,11 @@
 package business.flightinstance;
 
+import java.time.LocalDate;
+
 public class FlightInstanceDTO {
 	private long id;
-    private String departureDate;
-    private String arrivalDate;
+    private LocalDate departureDate;
+    private LocalDate arrivalDate;
     private String statusFlight;
     private int passengerCounter;
     private long idFlight;
@@ -11,7 +13,7 @@ public class FlightInstanceDTO {
     public FlightInstanceDTO() {}
 
     
-    public FlightInstanceDTO(long id, String departureDate, String arrivalDate, String statusFlight,
+    public FlightInstanceDTO(long id, LocalDate departureDate, LocalDate arrivalDate, String statusFlight,
 			int passengerCounter, long idFlight, boolean active) {
 		super();
 		this.id = id;
@@ -33,19 +35,19 @@ public class FlightInstanceDTO {
         this.id = id;
     }
 
-    public String getDepartureDate() {
+    public LocalDate getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(String departureDate) {
+    public void setDepartureDate(LocalDate departureDate) {
         this.departureDate = departureDate;
     }
 
-    public String getArrivalDate() {
+    public LocalDate getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(String arrivalDate) {
+    public void setArrivalDate(LocalDate arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 

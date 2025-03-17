@@ -1,6 +1,7 @@
 package business.flight;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Set;
 
 import business.aircraft.Aircraft;
@@ -36,9 +37,9 @@ public class Flight implements Serializable {
 	@Column(nullable = false)
 	private String weekDay;
 	@Column(nullable = false)
-	private String arrivalTime;
+	private LocalTime arrivalTime;
 	@Column(nullable = false)
-	private String departureTime;
+	private LocalTime departureTime;
 	private boolean active;
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false)
@@ -56,7 +57,7 @@ public class Flight implements Serializable {
 	
 	public Flight() {}
 	
-	public Flight(String codeFlight, String weekDay, String arrivalTime, String departureTime, boolean active,
+	public Flight(String codeFlight, String weekDay, LocalTime arrivalTime, LocalTime departureTime, boolean active,
 			Aircraft aircraft, Airport origin, Airport destination) {
 		super();
 		this.codeFlight = codeFlight;
@@ -95,19 +96,19 @@ public class Flight implements Serializable {
 		this.weekDay = weekDay;
 	}
 
-	public String getArrivalTime() {
+	public LocalTime getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public void setArrivalTime(String arrivalTime) {
+	public void setArrivalTime(LocalTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public String getDepartureTime() {
+	public LocalTime getDepartureTime() {
 		return departureTime;
 	}
 
-	public void setDepartureTime(String departureTime) {
+	public void setDepartureTime(LocalTime departureTime) {
 		this.departureTime = departureTime;
 	}
 

@@ -1,11 +1,13 @@
 package business.flight;
 
+import java.time.LocalTime;
+
 public class FlightDTO {
 	private long id;
     private String codeFlight;
     private String weekDay;
-    private String arrivalTime;
-    private String departureTime;
+    private LocalTime arrivalTime;
+    private LocalTime departureTime;
     private long idAircraft;
     private long idOriginFlight;
     private long idDestinationFlight;
@@ -28,16 +30,16 @@ public class FlightDTO {
 	public void setWeekDay(String weekDay) {
 		this.weekDay = weekDay;
 	}
-	public String getArrivalTime() {
+	public LocalTime getArrivalTime() {
 		return arrivalTime;
 	}
-	public void setArrivalTime(String arrivalTime) {
+	public void setArrivalTime(LocalTime arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
-	public String getDepartureTime() {
+	public LocalTime getDepartureTime() {
 		return departureTime;
 	}
-	public void setDepartureTime(String departureTime) {
+	public void setDepartureTime(LocalTime departureTime) {
 		this.departureTime = departureTime;
 	}
 	public long getIdAircraft() {
