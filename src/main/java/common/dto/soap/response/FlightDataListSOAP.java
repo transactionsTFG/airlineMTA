@@ -31,6 +31,8 @@ public class FlightDataListSOAP {
     private String countryDestination;
     @XmlElement
     private String weekDay;
+    @XmlElement
+    private double price;
 
     public FlightDataListSOAP toSOAP(final FlightData flightData) {
         this.id = flightData.getId();
@@ -40,6 +42,7 @@ public class FlightDataListSOAP {
         this.countryOrigin = flightData.getCountryOrigin();
         this.countryDestination = flightData.getCountryDestination();
         this.weekDay = flightData.getWeekDay();
+        this.price = flightData.getPrice();
         return this;
     }
 }

@@ -24,4 +24,5 @@ public class FlightData {
     private String countryOrigin;
     private String countryDestination;
     private String weekDay;
+    private double price;
 }

@@ -93,7 +93,8 @@ public class SAAFlightImpl implements SAAFlight {
 			destinationAirport.get("city"),
 			originCountry.get("name"),
 			destinationCountry.get("name"),
-			flight.get("weekDay"))
+			flight.get("weekDay"),
+			flightInstance.get("price"))
 		).where(predicates.toArray(new Predicate[0]));
 
 		return em.createQuery(cq).getResultList();
