@@ -2,6 +2,7 @@ package business.flight;
 
 import common.consts.SAError;
 import common.dto.flight.FlightData;
+import common.dto.flight.IdFlightInstanceWithSeatsDTO;
 import common.dto.result.Result;
 import common.exception.SAAFlightException;
 import common.exception.SAException;
@@ -13,7 +14,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,78 +28,80 @@ import javax.persistence.criteria.Root;
 import business.airport.Airport;
 import business.country.Country;
 import business.flightinstance.FlightInstance;
+import business.reservation.Reservation;
 import business.flightinstance.FlightInstanceDTO;
 
-@Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
+@Stateless // Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {
-		
-	private EntityManager em;
 
-	public SAAFlightImpl(){}
+    private EntityManager em;
 
-	@Inject
-	public SAAFlightImpl(final EntityManager em){
-		this.em = em;
-	}
+    public SAAFlightImpl() {
+    }
 
-	@Override
-	public Result<FlightDTO> search(long idFlight) throws SAException {
-		Flight flight = this.em.find(Flight.class, idFlight, LockModeType.NONE);
-		if (flight == null) 
-			throw new SAAFlightException(SAError.FLIGHT_DONTFOUND);
-			
-		return Result.success(flight.toDto());
-	}
+    @Inject
+    public SAAFlightImpl(final EntityManager em) {
+        this.em = em;
+    }
 
-	@Override
-	public List<FlightData> searchWithParams(String countryOrigin, String countryDestination, String cityOrigin, String cityDestination, String dateOrigin) {
-		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
-		CriteriaQuery<FlightData> cq = cb.createQuery(FlightData.class);
-		Root<Flight> flight = cq.from(Flight.class);
-		Join<Flight, FlightInstance> flightInstance = flight.join("flightInstance", JoinType.INNER);
-		Join<Flight, Airport> originAirport = flight.join("origin", JoinType.INNER);
-		Join<Flight, Airport> destinationAirport = flight.join("destination", JoinType.INNER);
-		Join<Airport, Country> originCountry = originAirport.join("country", JoinType.INNER);
-		Join<Airport, Country> destinationCountry = destinationAirport.join("country", JoinType.INNER);
+    @Override
+    public Result<FlightDTO> search(long idFlight) throws SAException {
+        Flight flight = this.em.find(Flight.class, idFlight, LockModeType.NONE);
+        if (flight == null)
+            throw new SAAFlightException(SAError.FLIGHT_DONTFOUND);
 
-		List<Predicate> predicates = new ArrayList<>();
+        return Result.success(flight.toDto());
+    }
 
-		predicates.add(cb.equal(flight.get("active"), true));
+    @Override
+    public List<FlightData> searchWithParams(String countryOrigin, String countryDestination, String cityOrigin,
+            String cityDestination, String dateOrigin) {
+        final CriteriaBuilder cb = this.em.getCriteriaBuilder();
+        CriteriaQuery<FlightData> cq = cb.createQuery(FlightData.class);
+        Root<Flight> flight = cq.from(Flight.class);
+        Join<Flight, FlightInstance> flightInstance = flight.join("flightInstance", JoinType.INNER);
+        Join<Flight, Airport> originAirport = flight.join("origin", JoinType.INNER);
+        Join<Flight, Airport> destinationAirport = flight.join("destination", JoinType.INNER);
+        Join<Airport, Country> originCountry = originAirport.join("country", JoinType.INNER);
+        Join<Airport, Country> destinationCountry = destinationAirport.join("country", JoinType.INNER);
 
-		if (countryOrigin != null && !countryOrigin.isEmpty()) 
-			predicates.add(cb.equal(originCountry.get("name"), countryOrigin));
+        List<Predicate> predicates = new ArrayList<>();
 
-		if (countryDestination != null && !countryDestination.isEmpty()) 
-			predicates.add(cb.equal(destinationCountry.get("name"), countryDestination));
+        predicates.add(cb.equal(flight.get("active"), true));
 
-		if (cityOrigin != null && !cityOrigin.isEmpty()) 
-			predicates.add(cb.equal(originAirport.get("city"), cityOrigin));
+        if (countryOrigin != null && !countryOrigin.isEmpty())
+            predicates.add(cb.equal(originCountry.get("name"), countryOrigin));
 
-		if (cityDestination != null && !cityDestination.isEmpty()) 
-			predicates.add(cb.equal(destinationAirport.get("city"), cityDestination));
+        if (countryDestination != null && !countryDestination.isEmpty())
+            predicates.add(cb.equal(destinationCountry.get("name"), countryDestination));
 
-		if (dateOrigin != null && !dateOrigin.isEmpty()) {
-			if (ZonedDateUtils.isValidateDateFilter(dateOrigin).isSuccess()) {
-				 Expression<LocalDate> departureDateExpr = flightInstance.get("departureDate");
-				 predicates.add(cb.greaterThanOrEqualTo(departureDateExpr, cb.literal(LocalDate.parse(dateOrigin))));
-			} else {
-				throw new SAAFlightException("Formato de fecha inválido: " + dateOrigin);
-			}
-		}
+        if (cityOrigin != null && !cityOrigin.isEmpty())
+            predicates.add(cb.equal(originAirport.get("city"), cityOrigin));
 
-		cq.select(cb.construct(FlightData.class, 
-			flight.get("id"),
-			flightInstance.get("arrivalDate"),
-			flightInstance.get("departureDate"),
-			destinationAirport.get("city"),
-			originCountry.get("name"),
-			destinationCountry.get("name"),
-			flight.get("weekDay"),
-			flightInstance.get("price"))
-		).where(predicates.toArray(new Predicate[0]));
+        if (cityDestination != null && !cityDestination.isEmpty())
+            predicates.add(cb.equal(destinationAirport.get("city"), cityDestination));
 
-		return em.createQuery(cq).getResultList();
-	}
+        if (dateOrigin != null && !dateOrigin.isEmpty()) {
+            if (ZonedDateUtils.isValidateDateFilter(dateOrigin).isSuccess()) {
+                Expression<LocalDate> departureDateExpr = flightInstance.get("departureDate");
+                predicates.add(cb.greaterThanOrEqualTo(departureDateExpr, cb.literal(LocalDate.parse(dateOrigin))));
+            } else {
+                throw new SAAFlightException("Formato de fecha inválido: " + dateOrigin);
+            }
+        }
+
+        cq.select(cb.construct(FlightData.class,
+                flight.get("id"),
+                flightInstance.get("arrivalDate"),
+                flightInstance.get("departureDate"),
+                destinationAirport.get("city"),
+                originCountry.get("name"),
+                destinationCountry.get("name"),
+                flight.get("weekDay"),
+                flightInstance.get("price"))).where(predicates.toArray(new Predicate[0]));
+
+        return em.createQuery(cq).getResultList();
+    }
 
 	@Override
 	public FlightInstanceDTO searchReservationFlightInstance(long idFlightInstance) {
@@ -109,5 +111,25 @@ public class SAAFlightImpl implements SAAFlight {
 			
 		return flightInstance.toDto();
 	}
+
+    @Override
+    public List<IdFlightInstanceWithSeatsDTO> searchFlightsByReservation(long idReservation) {
+        Reservation reservation = this.em.find(Reservation.class, idReservation, LockModeType.OPTIMISTIC);
+
+        if (reservation == null)
+            throw new SAAFlightException(SAError.RESERVATION_DONTFOUND);
+
+        if (!reservation.isActive())
+            throw new SAAFlightException(SAError.RESERVATION_NOT_ACTIVE);
+
+        return reservation.getReservationLine().stream()
+                .map(r -> {
+                    IdFlightInstanceWithSeatsDTO instanceWithSeatsDTO = new IdFlightInstanceWithSeatsDTO();
+                    instanceWithSeatsDTO.setIdFlightInstance(r.getFlightInstance().getId());
+                    instanceWithSeatsDTO.setSeats(r.getPassengerCount());
+                    return instanceWithSeatsDTO;
+                }).toList();
+
+    }
 
 }
