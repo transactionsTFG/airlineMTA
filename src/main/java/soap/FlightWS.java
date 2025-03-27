@@ -2,18 +2,15 @@ package soap;
 
 import business.flight.FlightDTO;
 import business.flight.SAAFlight;
-import business.flightinstance.FlightInstance;
 import business.flightinstance.FlightInstanceDTO;
 import common.consts.WebMethodConsts;
 import common.dto.flight.FlightData;
 import common.dto.result.Result;
-import common.dto.soap.request.FlighInstanceSOAP;
 import common.dto.soap.request.ParamFlightSOAP;
 import common.dto.soap.response.FlightDataListSOAP;
 import common.dto.soap.response.FlightSOAP;
 import common.dto.soap.response.SoapResponse;
 import common.mapper.SoapResponseMapper;
-import weblogic.wsee.wstx.wsat.Transactional;
 
 import java.util.List;
 
