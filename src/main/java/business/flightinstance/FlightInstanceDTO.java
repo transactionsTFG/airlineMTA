@@ -2,7 +2,6 @@ package business.flightinstance;
 
 import java.time.LocalDate;
 
-import com.rsa.cryptoj.e.pu;
 
 public class FlightInstanceDTO {
 	private long id;

@@ -28,6 +28,7 @@ import javax.persistence.criteria.Root;
 import business.airport.Airport;
 import business.country.Country;
 import business.flightinstance.FlightInstance;
+import business.flightinstance.FlightInstanceDTO;
 
 @Stateless //Agrego esto para que se pueda gestionar mediante un contenedor de EJB
 public class SAAFlightImpl implements SAAFlight {
@@ -98,6 +99,15 @@ public class SAAFlightImpl implements SAAFlight {
 		).where(predicates.toArray(new Predicate[0]));
 
 		return em.createQuery(cq).getResultList();
+	}
+
+	@Override
+	public FlightInstanceDTO searchReservationFlightInstance(long idFlightInstance) {
+		FlightInstance flightInstance = this.em.find(FlightInstance.class, idFlightInstance, LockModeType.NONE);
+		if (flightInstance == null) 
+			throw new SAAFlightException(SAError.FLIGHT_INSTANCE_DONTFOUND);
+			
+		return flightInstance.toDto();
 	}
 
 }

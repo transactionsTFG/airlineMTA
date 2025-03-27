@@ -2,9 +2,12 @@ package soap;
 
 import business.flight.FlightDTO;
 import business.flight.SAAFlight;
+import business.flightinstance.FlightInstance;
+import business.flightinstance.FlightInstanceDTO;
 import common.consts.WebMethodConsts;
 import common.dto.flight.FlightData;
 import common.dto.result.Result;
+import common.dto.soap.request.FlighInstanceSOAP;
 import common.dto.soap.request.ParamFlightSOAP;
 import common.dto.soap.response.FlightDataListSOAP;
 import common.dto.soap.response.FlightSOAP;
@@ -45,4 +48,12 @@ public class FlightWS {
                                       param.getDateOrigin());
         return  flights.stream().map(f -> new FlightDataListSOAP().toSOAP(f)).toList();  
     }
+
+    @WebMethod(operationName=WebMethodConsts.OP_SEARCH_RESERVATION_FLIGHT_INSTANCE)
+    public FlightInstanceDTO searchReservationFlightInstance(@WebParam(name = "idFlightInstance") final long idFlightInstance){
+        return this.servicesFlight.searchReservationFlightInstance(idFlightInstance);
+    }
+
+
+
 }
