@@ -153,6 +153,6 @@ public class FlightInstance implements Serializable {
 		return new FlightInstanceDTO(this.id, 
 									this.arrivalDate, 
 									this.departureDate, 
-									 statusFlight, passengerCounter, this.getFlight().getId(), active);
+									 statusFlight, passengerCounter, this.getFlight().getId(), active, price);
 	}
 }

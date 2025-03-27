@@ -2,6 +2,8 @@ package business.flightinstance;
 
 import java.time.LocalDate;
 
+import com.rsa.cryptoj.e.pu;
+
 public class FlightInstanceDTO {
 	private long id;
     private LocalDate departureDate;
@@ -10,11 +12,12 @@ public class FlightInstanceDTO {
     private int passengerCounter;
     private long idFlight;
     private boolean active;
+    private double price;
     public FlightInstanceDTO() {}
 
     
     public FlightInstanceDTO(long id, LocalDate departureDate, LocalDate arrivalDate, String statusFlight,
-			int passengerCounter, long idFlight, boolean active) {
+			int passengerCounter, long idFlight, boolean active, double price) {
 		super();
 		this.id = id;
 		this.departureDate = departureDate;
@@ -23,9 +26,8 @@ public class FlightInstanceDTO {
 		this.passengerCounter = passengerCounter;
 		this.idFlight = idFlight;
 		this.active = active;
+        this.price = price;
 	}
-
-
 
 	public long getId() {
         return id;
@@ -84,5 +86,13 @@ public class FlightInstanceDTO {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
     
 }
