@@ -49,6 +49,7 @@ public class FlightWS {
     @WebMethod(operationName = WebMethodConsts.OP_SEARCH_FLIGHTS_BY_RESERVATION)
     public List<IdFlightInstanceWithSeatsDTO> searchFlightsByReservation(
             @WebParam(name = "idReservation") final long idReservation) {
+				// System.out.println("SOAP - idReservation: " + idReservation);
         return this.servicesFlight.searchFlightsByReservation(idReservation);
 
     }

@@ -18,6 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FlightData {
     private long id;
+	private long idFlightInstance;
     private LocalDate arrivalDate;
     private LocalDate departureDate;
     private String cityDestination;

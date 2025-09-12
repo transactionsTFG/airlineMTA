@@ -20,6 +20,8 @@ public class FlightDataListSOAP {
     @XmlElement
     private long id;
     @XmlElement
+	private long idFlightInstance;
+    @XmlElement
     private LocalDate arrivalDate;
     @XmlElement
     private LocalDate departureDate;
@@ -36,6 +38,7 @@ public class FlightDataListSOAP {
 
     public FlightDataListSOAP toSOAP(final FlightData flightData) {
         this.id = flightData.getId();
+		this.idFlightInstance = flightData.getIdFlightInstance();
         this.arrivalDate = flightData.getArrivalDate();
         this.departureDate = flightData.getDepartureDate();
         this.cityDestination = flightData.getCityDestination();

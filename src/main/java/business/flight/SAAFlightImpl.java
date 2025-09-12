@@ -92,6 +92,7 @@ public class SAAFlightImpl implements SAAFlight {
 
         cq.select(cb.construct(FlightData.class,
                 flight.get("id"),
+                flightInstance.get("id"),
                 flightInstance.get("arrivalDate"),
                 flightInstance.get("departureDate"),
                 destinationAirport.get("city"),
@@ -108,7 +109,7 @@ public class SAAFlightImpl implements SAAFlight {
 		FlightInstance flightInstance = this.em.find(FlightInstance.class, idFlightInstance, LockModeType.NONE);
 		if (flightInstance == null) 
 			throw new SAAFlightException(SAError.FLIGHT_INSTANCE_DONTFOUND);
-			
+			System.out.println("SOAP - FlightInstanceId: " + flightInstance.getId());
 		return flightInstance.toDto();
 	}
 
@@ -121,6 +122,11 @@ public class SAAFlightImpl implements SAAFlight {
 
         if (!reservation.isActive())
             throw new SAAFlightException(SAError.RESERVATION_NOT_ACTIVE);
+
+		// System.out.println("SOAP - idReservation: " + idReservation);
+		// reservation.getReservationLine().forEach(r -> {
+		// 	System.out.println("SOAP - FlightInstanceId: " + r.getFlightInstance().getId() + ", Seats: " + r.getPassengerCount());
+		// });
 
         return reservation.getReservationLine().stream()
                 .map(r -> {
