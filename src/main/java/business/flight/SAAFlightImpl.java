@@ -100,7 +100,7 @@ public class SAAFlightImpl implements SAAFlight {
                 destinationCountry.get("name"),
                 flight.get("weekDay"),
                 flightInstance.get("price"))).where(predicates.toArray(new Predicate[0]));
-
+		this.em.flush();
         return em.createQuery(cq).getResultList();
     }
 
@@ -127,7 +127,8 @@ public class SAAFlightImpl implements SAAFlight {
 		// reservation.getReservationLine().forEach(r -> {
 		// 	System.out.println("SOAP - FlightInstanceId: " + r.getFlightInstance().getId() + ", Seats: " + r.getPassengerCount());
 		// });
-
+		this.em.flush();
+		this.em.refresh(reservation);
         return reservation.getReservationLine().stream()
                 .map(r -> {
                     IdFlightInstanceWithSeatsDTO instanceWithSeatsDTO = new IdFlightInstanceWithSeatsDTO();
